@@ -12,6 +12,42 @@
 #define PASSWORD "eucaliptus"
 #define DATABASE "MUDGAMEDB"
 
+bool compruebaUsuario(std::string usuario, sql::Statement* statem){
+    sql::ResultSet* res = statem->executeQuery("SELECT PlayerName FROM Players WHERE PlayerName='" + usuario + "'");
+    return(res->next());
+}
+
+bool compruebaUsuarioPassword(std::string usuario, std::string contras, sql::Statement* statem){
+    // Selecciona la entrada en la que el usuario y la contraseña coincidan.
+    sql::ResultSet* res = statem->executeQuery("SELECT PlayerName, PlayerPassword FROM Players WHERE PlayerName='" + usuario +"' AND PlayerPassword='" + contras + "'");
+    return (res->next());
+}
+
+void LOGIN(sql::Statement* stmt){
+    bool isLoggedIn = false;    // Para el control del bucle. (si está Logged In o no).
+    std::cout << "LOGIN" << std::endl;
+    while(!isLoggedIn){
+        // El usuario introduce el usuario:
+        std::string user, passwd;
+        std::cout << "Usuario: ";
+        std::cin >> user;
+        // Se comprueba si el nombre de usuario está en la base de datos:
+        if(compruebaUsuario(user, stmt)){
+        // Si está, entonces, que pregunte por la contraseña:
+            bool isCorrect = false; // Para controlar el bucle.
+            while(!isCorrect){
+                std::cout << "Contraseña: ";
+                std::cin >> passwd;
+                isCorrect = compruebaUsuarioPassword(user, passwd, stmt);    // Si ha resultado, entonces es correcto.
+            }
+            isLoggedIn = true;
+        }
+        // Si no está, imprime que no existe.
+        else{ std::cout << "El usuario " << user << " no existe." << std::endl; }
+    }
+
+}
+
 int main(){
     try{
         sql::Driver* driver = get_driver_instance();
@@ -20,25 +56,9 @@ int main(){
 
         sql::Statement* stmt = con->createStatement();
 
-        // El usuario introduce el usuario:
-        std::string user, passwd;
-        std::cout << "LOGIN" << std::endl << "Usuario: ";
-        std::cin >> user;
-        // Se comprueba si el nombre de usuario está en la base de datos:
-        sql::ResultSet* res = stmt->executeQuery("SELECT PlayerName FROM Players WHERE PlayerName='" + user + "'");
-        // Si está, entonces, que pregunte por la contraseña:
-        if(res->next()){
-            bool isCorrect = false; // Para controlar el bucle.
-            while(!isCorrect){
-                std::cout << "Contraseña: ";
-                std::cin >> passwd;
-                // Selecciona la entrada en la que el usuario y la contraseña coincidan.
-                res = stmt->executeQuery("SELECT PlayerName, PlayerPassword FROM Players WHERE PlayerName='" + user +"' AND PlayerPassword='" + passwd + "'");
-                if(res->next()){ isCorrect = true; }    // Si ha resultado, entonces es correcto.
-            }
-        }
-        // Si no está, imprime que no existe.
-        else{ std::cout << "El usuario " << user << " no existe." << std::endl; }
+        LOGIN(stmt);
+
+        std::cout << "LISTA DE PERSONAJES" << std::endl;
 
 
         /* EJEMPLOS DE SELECT Y SELECT COUNT
