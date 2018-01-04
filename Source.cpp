@@ -23,8 +23,9 @@ bool compruebaUsuarioPassword(std::string usuario, std::string contras, sql::Sta
     return (res->next());
 }
 
-void LOGIN(sql::Statement* stmt){
+bool LOGIN(sql::Statement* stmt){
     bool isLoggedIn = false;    // Para el control del bucle. (si está Logged In o no).
+    bool needsRegister = false; // Para hacer que el usuario se registre.
     std::cout << "LOGIN" << std::endl;
     while(!isLoggedIn){
         // El usuario introduce el usuario:
@@ -41,11 +42,45 @@ void LOGIN(sql::Statement* stmt){
                 isCorrect = compruebaUsuarioPassword(user, passwd, stmt);    // Si ha resultado, entonces es correcto.
             }
             isLoggedIn = true;
+            needsRegister = false;
         }
         // Si no está, imprime que no existe.
-        else{ std::cout << "El usuario " << user << " no existe." << std::endl; }
+        else{
+            char input;
+            std::cout << "El usuario " << user << " no existe." << std::endl;
+            std::cout << "¿Quieres registrarte? Y/n: ";
+            std::cin >> input;
+            if(input == 'y' || input == 'Y'){
+                needsRegister = true;
+                break;
+            }
+            else if(input == 'n' || input == 'N'){
+                needsRegister = false;
+                break;
+            }
+            else{ std::cout << "Respuesta no válida." << std::endl; }
+        }
     }
+    return needsRegister;  // Devuelve si necesita registrar.
+}
 
+void REGISTER(sql::Statement* stmt){
+    std::string user, passwd, checkPasswd;  // Almacena temporalmente la información del usuario.
+    bool passwdMatches = false;             // Booleano para controlar si la contraseña ha coincidido. Está en false para que entre una vez al while.
+    std::cout << "Vas a registrarte. Por favor, introduce la siguiente información:" << std::endl;
+    std::cout << "Nombre de usuario: ";
+    std::cin >> user;   // El usuario introduce su nombre de usuario
+    while(!passwdMatches){
+        std::cout << "Contraseña: ";
+        std::cin >> passwd;
+        std::cout << "Repite la contraseña: ";
+        std::cin >> checkPasswd;
+        if(checkPasswd == passwd){ passwdMatches = true;}   // Si son iguales, significa que coinciden.
+        else { std::cout << "Las contraseñas no coinciden. Vuelve a intentar:" << std::endl;}
+    }
+    // El usuario ha usado un nombre de usuario y contraseña válidos. Lo insertamos en la base de datos.
+    int inserted = stmt->executeUpdate("INSERT into Players(PlayerName,PlayerPassword) values ('" + user + "', '" + passwd + "')");
+    if(inserted == 1){ std::cout << "Te has registrado, " << user << ".\n"; }
 }
 
 int main(){
@@ -56,7 +91,7 @@ int main(){
 
         sql::Statement* stmt = con->createStatement();
 
-        LOGIN(stmt);
+        if(LOGIN(stmt)){ REGISTER(stmt); }
 
         std::cout << "LISTA DE PERSONAJES" << std::endl;
 
