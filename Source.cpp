@@ -19,6 +19,8 @@
 
 pugi::xml_document doc;
 
+struct Raza { std::string nombre; int vida_base; int fuerza_base; int velocidad_base; };
+
 bool compruebaUsuario(std::string usuario, sql::Statement* statem){
     sql::ResultSet* res = statem->executeQuery("SELECT PlayerName FROM Players WHERE PlayerName='" + usuario + "'");
     return(res->next());
@@ -74,9 +76,14 @@ bool LOGIN(sql::Statement* stmt){
 void REGISTER(sql::Statement* stmt){
     std::string user, passwd, checkPasswd;  // Almacena temporalmente la información del usuario.
     bool passwdMatches = false;             // Booleano para controlar si la contraseña ha coincidido. Está en false para que entre una vez al while.
+    bool nameIsTaken = true;                // Booleano para controlar si el nombre de usuario ya existe. Esta en false para que entre una vez al while.
     std::cout << "Vas a registrarte. Por favor, introduce la siguiente información:" << std::endl;
-    std::cout << "Nombre de usuario: ";
-    std::cin >> user;   // El usuario introduce su nombre de usuario
+    while(nameIsTaken){
+        std::cout << "Nombre de usuario: ";
+        std::cin >> user;   // El usuario introduce su nombre de usuario
+        nameIsTaken = compruebaUsuario(user, stmt);
+        if(nameIsTaken){ std::cout << "El nombre de usuario " << user << " ya existe. Prueba otro:" << std::endl;}
+    }
     while(!passwdMatches){
         std::cout << "Contraseña: ";
         std::cin >> passwd;
@@ -88,6 +95,10 @@ void REGISTER(sql::Statement* stmt){
     // El usuario ha usado un nombre de usuario y contraseña válidos. Lo insertamos en la base de datos.
     int inserted = stmt->executeUpdate("INSERT into Players(PlayerName,PlayerPassword) values ('" + user + "', '" + passwd + "')");
     if(inserted == 1){ std::cout << "Te has registrado, " << user << ".\n"; }
+}
+
+void CrearPersonaje(sql::Statement* stmt){
+    // Leer razas y guardarlas.
 }
 
 void CargarXML(){
@@ -111,9 +122,9 @@ int main(){
 
         sql::Statement* stmt = con->createStatement();
 
-        if(LOGIN(stmt)){ REGISTER(stmt); }
+        if(LOGIN(stmt)){ REGISTER(stmt); }  // Si el usuario ha elegido registrarse, LOGIN devuelve true, para ejecutar REGISTER().
 
-        std::cout << "LISTA DE PERSONAJES" << std::endl;
+        std::cout << "Empieza el juego" << std::endl;
 
         CargarXML();
         recorrerNodosJugadores();

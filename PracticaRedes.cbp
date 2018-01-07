@@ -31,6 +31,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add directory="include" />
+			<Add directory="pugixml-1.8/src" />
 		</Compiler>
 		<Linker>
 			<Add library="lib/libmysqlcppconn.so" />
