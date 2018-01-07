@@ -1,3 +1,8 @@
+#ifndef DEBUG
+    #define PUGIXML HEADER ONLY
+#endif  // DEBUG
+
+#include <pugixml.cpp>
 #include <iostream>
 #include <mysql_connection.h>
 #include <cppconn/driver.h>
@@ -11,6 +16,8 @@
 #define USER "root"
 #define PASSWORD "eucaliptus"
 #define DATABASE "MUDGAMEDB"
+
+pugi::xml_document doc;
 
 bool compruebaUsuario(std::string usuario, sql::Statement* statem){
     sql::ResultSet* res = statem->executeQuery("SELECT PlayerName FROM Players WHERE PlayerName='" + usuario + "'");
@@ -83,6 +90,19 @@ void REGISTER(sql::Statement* stmt){
     if(inserted == 1){ std::cout << "Te has registrado, " << user << ".\n"; }
 }
 
+void CargarXML(){
+    //pugi::xml_document doc;
+    pugi::xml_parse_result result = doc.load_file("jugadores.xml");
+    std::cout << "Se ha cargado: " << result.description() << std::endl;
+}
+
+void recorrerNodosJugadores(){
+    pugi::xml_node nodoJugadores = doc.child("jugadores");
+    for(pugi::xml_node nodoJugador = nodoJugadores.child("jugador"); nodoJugador; nodoJugador = nodoJugador.next_sibling("jugador")){
+        std::cout << "Se detecta un nodo 'jugador' dentro de la raiz 'jugadores'" << std::endl;
+    }
+}
+
 int main(){
     try{
         sql::Driver* driver = get_driver_instance();
@@ -95,6 +115,8 @@ int main(){
 
         std::cout << "LISTA DE PERSONAJES" << std::endl;
 
+        CargarXML();
+        recorrerNodosJugadores();
 
         /* EJEMPLOS DE SELECT Y SELECT COUNT
 
