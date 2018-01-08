@@ -11,25 +11,100 @@
 #include <cppconn/statement.h>
 #include <cppconn/prepared_statement.h>
 #include <string>
+#include <vector>
+#include <sstream>
 
 #define HOST "tcp://127.0.0.1:3306"
 #define USER "root"
 #define PASSWORD "eucaliptus"
 #define DATABASE "MUDGAMEDB"
 
-pugi::xml_document doc;
+template <typename T>
+  std::string NumToStr ( T Number )
+  {
+     std::ostringstream ss;
+     ss << Number;
+     return ss.str();
+  }
 
-struct Raza { std::string nombre; int vida_base; int fuerza_base; int velocidad_base; };
+pugi::xml_document doc;
+std::string usuario;
+
+struct Raza { int id; std::string nombre; int vida_base; int fuerza_base; int velocidad_base; };
+struct Personaje { std::string nombre, playerID, raceID, vida, fuerza,  velocidad, oro; };
 
 bool compruebaUsuario(std::string usuario, sql::Statement* statem){
     sql::ResultSet* res = statem->executeQuery("SELECT PlayerName FROM Players WHERE PlayerName='" + usuario + "'");
     return(res->next());
+    delete(res);
 }
 
 bool compruebaUsuarioPassword(std::string usuario, std::string contras, sql::Statement* statem){
     // Selecciona la entrada en la que el usuario y la contraseña coincidan.
     sql::ResultSet* res = statem->executeQuery("SELECT PlayerName, PlayerPassword FROM Players WHERE PlayerName='" + usuario +"' AND PlayerPassword='" + contras + "'");
     return (res->next());
+    delete(res);
+}
+
+void CrearPersonaje(sql::Statement* stmt){
+    std::vector<Raza> razas;
+    int enteredRace;
+    std::string enteredName;
+    bool validRace = false;
+    bool validName = false;
+    Personaje pers;
+    // Leer razas y guardarlas.
+    sql::ResultSet* res = stmt->executeQuery("SELECT * FROM Races");
+    while(res->next()){
+        razas.push_back({res->getInt("RaceID"), res->getString("RaceName"), res->getInt("RaceBaseLife"), res->getInt("RaceBaseStrength"), res->getInt("RaceBaseSpeed")});
+    }
+    delete(res);
+    std::cout << "Elige una raza para tu nuevo personaje:" << std::endl;
+    std::cout << "#  RAZA              VIDA    FUERZA    VELOCIDAD" << std::endl;
+    for(int i = 0; i < razas.size(); i++){
+        std::cout << i+1 << " - " << razas[i].nombre << "              " << razas[i].vida_base << "    " << razas[i].fuerza_base << "    " << razas[i].velocidad_base << std::endl;
+    }
+    while(!validRace){
+        std::cout << "Introduce la raza que has elegido: ";
+        std::cin >> enteredRace;
+        if(enteredRace <= razas.size() && enteredRace > 0){ validRace = true; }
+        else{ std::cout << "Raza no válida." << std::endl; }
+    }
+    enteredRace -= 1;
+    pers.raceID = NumToStr(razas[enteredRace].id);
+    pers.vida = NumToStr(razas[enteredRace].vida_base);
+    pers.fuerza = NumToStr(razas[enteredRace].fuerza_base);
+    pers.velocidad = NumToStr(razas[enteredRace].velocidad_base);
+    pers.oro = NumToStr(0);
+
+    std::cout << "Has elejido " << razas[enteredRace].nombre << ".\n";
+
+    while(!validName){
+        std::cout << "Introduce el nombre del personaje: ";
+        std::cin >> enteredName;
+        res = stmt->executeQuery("SELECT count(*) FROM Characters WHERE CharacterName='" + enteredName + "'");
+        if(res->next()){
+            if(res->getInt(1) == 1){
+                std::cout << "El nombre ya existe, por favor, prueba con otro." << std::endl;
+            }
+            else{ validName = true; }
+        }
+        delete(res);
+    }
+    std::cout << "Tu personaje se llamará " << enteredName << ".\n";
+    pers.nombre = enteredName;
+
+    res = stmt->executeQuery("SELECT PlayerID FROM Players WHERE PlayerName='" + usuario + "'");
+    res->next();
+    pers.playerID = NumToStr(res->getInt("PlayerID"));
+    delete(res);
+
+    /*int inserted = stmt->executeUpdate("INSERT INTO Characters(CharacterName, PlayerID, RaceID) VALUES ('"+pers.nombre+"','"+pers.playerID+"','"+pers.raceID+"')");
+    if(inserted != 1) { std::cout << "Error introduciendo tu personaje en la base de datos.\n";}
+    inserted = stmt->executeUpdate("UPDATE Characters SET life ="+pers.vida+" WHERE CharacterName='"+pers.nombre+"'");
+    if(inserted != 1) { std::cout << "Error actualizando tu personaje en la base de datos.\n";}*/
+    int e = stmt->executeUpdate("INSERT INTO Characters(CharacterName, PlayerID, RaceID, Life, Strength, Speed, Gold) values('"
+    + pers.nombre + "','" + pers.playerID + "','" + pers.raceID + "','" + pers.vida + "','" + pers.fuerza + "','" + pers.velocidad + "','" + pers.oro + "')");
 }
 
 bool LOGIN(sql::Statement* stmt){
@@ -52,6 +127,7 @@ bool LOGIN(sql::Statement* stmt){
             }
             isLoggedIn = true;
             needsRegister = false;
+            usuario = user;
         }
         // Si no está, imprime que no existe.
         else{
@@ -95,10 +171,9 @@ void REGISTER(sql::Statement* stmt){
     // El usuario ha usado un nombre de usuario y contraseña válidos. Lo insertamos en la base de datos.
     int inserted = stmt->executeUpdate("INSERT into Players(PlayerName,PlayerPassword) values ('" + user + "', '" + passwd + "')");
     if(inserted == 1){ std::cout << "Te has registrado, " << user << ".\n"; }
-}
+    usuario = user;
 
-void CrearPersonaje(sql::Statement* stmt){
-    // Leer razas y guardarlas.
+    CrearPersonaje(stmt);
 }
 
 void CargarXML(){
@@ -126,8 +201,13 @@ int main(){
 
         std::cout << "Empieza el juego" << std::endl;
 
-        CargarXML();
-        recorrerNodosJugadores();
+        //CargarXML();
+        //recorrerNodosJugadores();
+
+        delete(stmt);
+        delete(con);
+
+        system("pause");
 
         /* EJEMPLOS DE SELECT Y SELECT COUNT
 

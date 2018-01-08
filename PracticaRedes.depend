@@ -83,7 +83,7 @@
 	<iostream>
 	"statement.h"
 
-1515363845 source:/home/lemon/Desktop/Redes/PracticaFinal_Redes/Source.cpp
+1515423040 source:/home/lemon/Desktop/Redes/PracticaFinal_Redes/Source.cpp
 	<pugixml.cpp>
 	<iostream>
 	<mysql_connection.h>
@@ -93,6 +93,8 @@
 	<cppconn/statement.h>
 	<cppconn/prepared_statement.h>
 	<string>
+	<vector>
+	<sstream>
 
 1494432899 /home/lemon/Desktop/Redes/PracticaFinal_Redes/include/mysql_connection.h
 	<cppconn/connection.h>
