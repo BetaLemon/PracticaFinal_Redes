@@ -32,9 +32,12 @@
 			<Add option="-Wall" />
 			<Add directory="include" />
 			<Add directory="pugixml-1.8/src" />
+			<Add directory="SFML/include" />
 		</Compiler>
 		<Linker>
 			<Add library="lib/libmysqlcppconn.so" />
+			<Add library="SFML/lib/libsfml-network.so" />
+			<Add library="SFML/lib/libsfml-system.so" />
 			<Add directory="lib" />
 		</Linker>
 		<Unit filename="Source.cpp" />

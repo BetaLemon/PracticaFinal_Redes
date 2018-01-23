@@ -113,3 +113,312 @@
 	<iostream>
 	"statement.h"
 
+1516730818 source:/home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/Source.cpp
+	<pugixml.cpp>
+	<iostream>
+	<mysql_connection.h>
+	<cppconn/driver.h>
+	<cppconn/exception.h>
+	<cppconn/resultset.h>
+	<cppconn/statement.h>
+	<cppconn/prepared_statement.h>
+	<string>
+	<vector>
+	<sstream>
+	<SFML/Network.hpp>
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/pugixml-1.8/src/pugixml.cpp
+	"pugixml.hpp"
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<assert.h>
+	<limits.h>
+	<wchar.h>
+	<math.h>
+	<float.h>
+	<setjmp.h>
+	<istream>
+	<ostream>
+	<string>
+	<new>
+	<stdint.h>
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/pugixml-1.8/src/pugixml.hpp
+	"pugiconfig.hpp"
+	<stddef.h>
+	<exception>
+	<iterator>
+	<iosfwd>
+	<string>
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/pugixml-1.8/src/pugiconfig.hpp
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/include/mysql_connection.h
+	<cppconn/connection.h>
+	<boost/shared_ptr.hpp>
+	<boost/scoped_ptr.hpp>
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/include/cppconn/connection.h
+	<map>
+	"build_config.h"
+	"warning.h"
+	"sqlstring.h"
+	"variant.h"
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/include/cppconn/build_config.h
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/include/cppconn/warning.h
+	<stdexcept>
+	<string>
+	<memory>
+	"sqlstring.h"
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/include/cppconn/sqlstring.h
+	<string>
+	<algorithm>
+	"build_config.h"
+	<iostream>
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/include/cppconn/variant.h
+	<string>
+	<map>
+	<list>
+	<algorithm>
+	<typeinfo>
+	"build_config.h"
+	"sqlstring.h"
+	"exception.h"
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/include/cppconn/exception.h
+	"build_config.h"
+	<stdexcept>
+	<string>
+	<memory>
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/include/cppconn/driver.h
+	"connection.h"
+	"build_config.h"
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/include/cppconn/resultset.h
+	"config.h"
+	<list>
+	<map>
+	<iostream>
+	"sqlstring.h"
+	"resultset_metadata.h"
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/include/cppconn/config.h
+	<stdint.h>
+	<inttypes.h>
+	<stdint.h>
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/include/cppconn/resultset_metadata.h
+	"sqlstring.h"
+	"datatype.h"
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/include/cppconn/datatype.h
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/include/cppconn/statement.h
+	"config.h"
+	"resultset.h"
+	<string>
+
+1516723826 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/include/cppconn/prepared_statement.h
+	<iostream>
+	"statement.h"
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/Network.hpp
+	<SFML/System.hpp>
+	<SFML/Network/Ftp.hpp>
+	<SFML/Network/Http.hpp>
+	<SFML/Network/IpAddress.hpp>
+	<SFML/Network/Packet.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/Network/SocketHandle.hpp>
+	<SFML/Network/SocketSelector.hpp>
+	<SFML/Network/TcpListener.hpp>
+	<SFML/Network/TcpSocket.hpp>
+	<SFML/Network/UdpSocket.hpp>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System.hpp
+	<SFML/Config.hpp>
+	<SFML/System/Clock.hpp>
+	<SFML/System/Err.hpp>
+	<SFML/System/FileInputStream.hpp>
+	<SFML/System/InputStream.hpp>
+	<SFML/System/Lock.hpp>
+	<SFML/System/MemoryInputStream.hpp>
+	<SFML/System/Mutex.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Sleep.hpp>
+	<SFML/System/String.hpp>
+	<SFML/System/Thread.hpp>
+	<SFML/System/ThreadLocal.hpp>
+	<SFML/System/ThreadLocalPtr.hpp>
+	<SFML/System/Time.hpp>
+	<SFML/System/Utf.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Vector3.hpp>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/Config.hpp
+	"TargetConditionals.h"
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/Clock.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Time.hpp>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/Export.hpp
+	<SFML/Config.hpp>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/Time.hpp
+	<SFML/System/Export.hpp>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/Err.hpp
+	<SFML/System/Export.hpp>
+	<ostream>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/FileInputStream.hpp
+	<SFML/Config.hpp>
+	<SFML/System/Export.hpp>
+	<SFML/System/InputStream.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<cstdio>
+	<string>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/InputStream.hpp
+	<SFML/Config.hpp>
+	<SFML/System/Export.hpp>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/NonCopyable.hpp
+	<SFML/System/Export.hpp>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/Lock.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/MemoryInputStream.hpp
+	<SFML/Config.hpp>
+	<SFML/System/InputStream.hpp>
+	<SFML/System/Export.hpp>
+	<cstdlib>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/Mutex.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/Sleep.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Time.hpp>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/String.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Utf.hpp>
+	<iterator>
+	<locale>
+	<string>
+	<SFML/System/String.inl>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/Utf.hpp
+	<SFML/Config.hpp>
+	<algorithm>
+	<locale>
+	<string>
+	<cstdlib>
+	<SFML/System/Utf.inl>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/Utf.inl
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/String.inl
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/Thread.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<cstdlib>
+	<SFML/System/Thread.inl>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/Thread.inl
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/ThreadLocal.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<cstdlib>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/ThreadLocalPtr.hpp
+	<SFML/System/ThreadLocal.hpp>
+	<SFML/System/ThreadLocalPtr.inl>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/ThreadLocalPtr.inl
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/Vector2.hpp
+	<SFML/System/Vector2.inl>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/Vector2.inl
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/Vector3.hpp
+	<SFML/System/Vector3.inl>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/System/Vector3.inl
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/Network/Ftp.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/TcpSocket.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Time.hpp>
+	<string>
+	<vector>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/Network/Export.hpp
+	<SFML/Config.hpp>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/Network/TcpSocket.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/System/Time.hpp>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/Network/Socket.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/SocketHandle.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<vector>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/Network/SocketHandle.hpp
+	<SFML/Config.hpp>
+	<basetsd.h>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/Network/Http.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/IpAddress.hpp>
+	<SFML/Network/TcpSocket.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Time.hpp>
+	<map>
+	<string>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/Network/IpAddress.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/System/Time.hpp>
+	<istream>
+	<ostream>
+	<string>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/Network/Packet.hpp
+	<SFML/Network/Export.hpp>
+	<string>
+	<vector>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/Network/SocketSelector.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/System/Time.hpp>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/Network/TcpListener.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/Network/IpAddress.hpp>
+
+1486736354 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/Network/UdpSocket.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/Network/IpAddress.hpp>
+	<vector>
+
