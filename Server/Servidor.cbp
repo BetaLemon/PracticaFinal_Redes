@@ -37,6 +37,8 @@
 			<Add library="lib/libmysqlcppconn.so" />
 			<Add directory="lib" />
 		</Linker>
+		<Unit filename="Room.cpp" />
+		<Unit filename="Room.hpp" />
 		<Unit filename="Source.cpp" />
 		<Extensions>
 			<code_completion />

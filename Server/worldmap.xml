@@ -1,15 +1,18 @@
 <root>
     <rooms>
         <room ID = "0">
-            <linkers type="array">
-                <linker roomID = "1" direction = "N"></linker>
-            </linkers>
+            <MSG>"Mensaje Random"</MSG>
+            <N>"1"</N>
+            <S>"-1"</S>
+            <E>"-1"</E>
+            <W>"-1"</W>
         </room>
         <room ID = "1">
-            <linkers type="array">
-                <linker roomID = "0" direction = "S"></linker>
-                <linker roomID = "2" direction = "N"></linker>
-            </linkers>
+            <MSG>"Mensaje Random"</MSG>
+            <N>"-1"</N>
+            <S>"0"</S>
+            <E>"-1"</E>
+            <W>"-1"</W>
         </room>
     </rooms>
 </root>
