@@ -13,6 +13,8 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <SFML/Main.hpp>
+#include <SFML/Network.hpp>
 
 #define HOST "tcp://127.0.0.1:3306"
 #define USER "root"
@@ -214,13 +216,38 @@ void recorrerNodosJugadores(){
     }
 }
 
+void GestionarCliente(sf::TcpSocket *socket){
+    bool playerExit = false;
+    //while(!playerExit && socket->)
+}
+
+// LISTA DE DUDAS PARA JUEVES: wait(),
+
 int main(){
     try{
+        // Inicialización para MySQL:
         sql::Driver* driver = get_driver_instance();
         sql::Connection* con = driver->connect(HOST, USER, PASSWORD);
         con->setSchema(DATABASE);
 
         sql::Statement* stmt = con->createStatement();
+
+        // Lógica del servidor:
+        sf::TcpListener listener;
+        listener.listen(50000);
+        bool gameRunning = true;
+        std::vector<sf::TcpSocket*> sockets;
+
+        while(gameRunning){
+            sf::TcpSocket socket;
+            listener.accept(socket);
+            sockets.push_back(&socket);
+            if(fork() == 0){
+                GestionarCliente(&socket);
+                exit(0);
+            }
+        }
+
 
         if(LOGIN(stmt)){ REGISTER(stmt); }  // Si el usuario ha elegido registrarse, LOGIN devuelve true, para ejecutar REGISTER().
 
