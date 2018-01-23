@@ -1,0 +1,115 @@
+# depslib dependency file v1.0
+1515433926 source:/home/lemon/Downloads/PracticaFinal_Redes-master/Server/Source.cpp
+	<pugixml.cpp>
+	<iostream>
+	<mysql_connection.h>
+	<cppconn/driver.h>
+	<cppconn/exception.h>
+	<cppconn/resultset.h>
+	<cppconn/statement.h>
+	<cppconn/prepared_statement.h>
+	<string>
+	<vector>
+	<sstream>
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/pugixml-1.8/src/pugixml.cpp
+	"pugixml.hpp"
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<assert.h>
+	<limits.h>
+	<wchar.h>
+	<math.h>
+	<float.h>
+	<setjmp.h>
+	<istream>
+	<ostream>
+	<string>
+	<new>
+	<stdint.h>
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/pugixml-1.8/src/pugixml.hpp
+	"pugiconfig.hpp"
+	<stddef.h>
+	<exception>
+	<iterator>
+	<iosfwd>
+	<string>
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/pugixml-1.8/src/pugiconfig.hpp
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/include/mysql_connection.h
+	<cppconn/connection.h>
+	<boost/shared_ptr.hpp>
+	<boost/scoped_ptr.hpp>
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/include/cppconn/connection.h
+	<map>
+	"build_config.h"
+	"warning.h"
+	"sqlstring.h"
+	"variant.h"
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/include/cppconn/build_config.h
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/include/cppconn/warning.h
+	<stdexcept>
+	<string>
+	<memory>
+	"sqlstring.h"
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/include/cppconn/sqlstring.h
+	<string>
+	<algorithm>
+	"build_config.h"
+	<iostream>
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/include/cppconn/variant.h
+	<string>
+	<map>
+	<list>
+	<algorithm>
+	<typeinfo>
+	"build_config.h"
+	"sqlstring.h"
+	"exception.h"
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/include/cppconn/exception.h
+	"build_config.h"
+	<stdexcept>
+	<string>
+	<memory>
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/include/cppconn/driver.h
+	"connection.h"
+	"build_config.h"
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/include/cppconn/resultset.h
+	"config.h"
+	<list>
+	<map>
+	<iostream>
+	"sqlstring.h"
+	"resultset_metadata.h"
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/include/cppconn/config.h
+	<stdint.h>
+	<inttypes.h>
+	<stdint.h>
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/include/cppconn/resultset_metadata.h
+	"sqlstring.h"
+	"datatype.h"
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/include/cppconn/datatype.h
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/include/cppconn/statement.h
+	"config.h"
+	"resultset.h"
+	<string>
+
+1515433926 /home/lemon/Downloads/PracticaFinal_Redes-master/Server/include/cppconn/prepared_statement.h
+	<iostream>
+	"statement.h"
+

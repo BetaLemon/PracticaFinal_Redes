@@ -1,0 +1,10 @@
+<jugadores>
+	<jugador>
+		<usuario>user1</usuario>
+		<password>pwd123</password>
+	</jugador>
+	<jugador>
+		<usuario>user1</usuario>
+		<password>pwd123</password>
+	</jugador>
+</jugadores>
