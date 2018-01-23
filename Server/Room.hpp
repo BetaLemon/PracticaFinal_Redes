@@ -1,4 +1,6 @@
-class Room{
+#pragma once
+class Room
+{
 public:
     Room();
     Room(char* msg, Room* n, Room* s, Room* e, Room* w);
@@ -15,4 +17,4 @@ private:
     Room* roomS;
     Room* roomE;
     Room* roomW;
-}
+};

@@ -1,7 +1,7 @@
 #include "Room.hpp"
 
 Room::Room(){
-    message = nullptr;
+    message = "";
     roomN = nullptr;
     roomS = nullptr;
     roomE = nullptr;

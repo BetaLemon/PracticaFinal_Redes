@@ -29,6 +29,7 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add directory="include" />
 			<Add directory="pugixml-1.8/src" />
@@ -40,6 +41,7 @@
 			<Add library="SFML/lib/libsfml-system.so" />
 			<Add directory="lib" />
 		</Linker>
+		<Unit filename="../.gitignore" />
 		<Unit filename="Room.cpp" />
 		<Unit filename="Room.hpp" />
 		<Unit filename="Source.cpp" />
