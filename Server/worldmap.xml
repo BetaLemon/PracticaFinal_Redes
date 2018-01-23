@@ -1,0 +1,15 @@
+<root>
+    <rooms>
+        <room ID = "0">
+            <linkers type="array">
+                <linker roomID = "1" direction = "N"></linker>
+            </linkers>
+        </room>
+        <room ID = "1">
+            <linkers type="array">
+                <linker roomID = "0" direction = "S"></linker>
+                <linker roomID = "2" direction = "N"></linker>
+            </linkers>
+        </room>
+    </rooms>
+</root>
