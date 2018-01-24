@@ -249,6 +249,7 @@ int main(){
         sql::Statement* stmt = con->createStatement();
 
         // Lógica del servidor:
+        std::cout << "Listening..." << std::endl;
         sf::TcpListener listener;
         listener.listen(50000);
         bool gameRunning = true;
@@ -256,7 +257,9 @@ int main(){
 
         while(gameRunning){
             sf::TcpSocket socket;
+            std::cout << "Waiting for new connection..." << std::endl;
             listener.accept(socket);
+            std::cout << "New Socket Accepted from: "<< socket.getRemoteAddress() <<":"<<socket.getRemotePort()<<std::endl;
             sockets.push_back(&socket);
             if(fork() == 0){
                 GestionarCliente(&socket);
