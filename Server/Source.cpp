@@ -16,9 +16,10 @@
 #include <SFML/Main.hpp>
 #include <SFML/Network.hpp>
 
+//#define HOST "tcp://127.0.0.1:3306"
 #define HOST "tcp://127.0.0.1:3306"
 #define USER "root"
-#define PASSWORD "eucaliptus"
+#define PASSWORD "over9000"
 #define DATABASE "MUDGAMEDB"
 
 // Una función que permite convertir un int a string (no me funcionaba to_string()):
@@ -216,8 +217,23 @@ void recorrerNodosJugadores(){
     }
 }
 
+void SendFromSocket(sf::TcpSocket* s, std::string msg){
+    std::string * tmp;
+    *tmp = msg;
+    s->send(tmp, tmp->length());
+}
+
 void GestionarCliente(sf::TcpSocket *socket){
     bool playerExit = false;
+    while(!playerExit && socket->Done)
+    {
+    /*
+        std::string* msg;
+        *msg = "PACO";
+        socket->send(msg, sizeof(msg));*/
+        SendFromSocket(socket, "YAY");
+
+    }
     //while(!playerExit && socket->)
 }
 
