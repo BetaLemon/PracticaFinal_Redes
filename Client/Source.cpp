@@ -2,7 +2,6 @@
     #define PUGIXML HEADER ONLY
 #endif  // DEBUG
 
-#include <pugixml.cpp>
 #include <iostream>
 #include <mysql_connection.h>
 #include <cppconn/driver.h>
@@ -15,7 +14,7 @@
 #include <sstream>
 #include <SFML/Network.hpp>
 
-#define HOST "tcp://127.0.0.1:3306"
+#define HOST "127.0.0.1"
 #define PORT 50000
 
 // Una función que permite convertir un int a string (no me funcionaba to_string()):
@@ -28,8 +27,11 @@ std::string NumToStr ( T Number )
 }
 
 int main(){
+    sf::Socket::Status stat;
     sf::TcpSocket sock;
-    sock.connect(HOST, PORT, sf::seconds(15.f));
+    stat = sock.connect(HOST, PORT, sf::seconds(15.f));
+
+    std::cout << stat;
 
 
     return 0;
