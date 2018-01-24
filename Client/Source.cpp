@@ -14,7 +14,7 @@
 #include <sstream>
 #include <SFML/Network.hpp>
 
-#define HOST "127.0.0.1"
+#define HOST ""
 #define PORT 50000
 
 // Una función que permite convertir un int a string (no me funcionaba to_string()):
