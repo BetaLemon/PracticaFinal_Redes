@@ -3,18 +3,12 @@
 #endif  // DEBUG
 
 #include <iostream>
-#include <mysql_connection.h>
-#include <cppconn/driver.h>
-#include <cppconn/exception.h>
-#include <cppconn/resultset.h>
-#include <cppconn/statement.h>
-#include <cppconn/prepared_statement.h>
 #include <string>
 #include <vector>
 #include <sstream>
 #include <SFML/Network.hpp>
 
-#define HOST "127.0.0.1"
+#define HOST "10.38.0.163"
 #define PORT 50000
 #define MAX_BUFF_SIZE 100
 
