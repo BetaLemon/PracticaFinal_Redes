@@ -27,7 +27,7 @@ std::string Receive(sf::TcpSocket* sock)
     size_t received;
     char buffer[MAX_BUFF_SIZE];
     status = sock->receive(buffer, MAX_BUFF_SIZE, received);
-    buffer[MAX_BUFF_SIZE]='\0';
+    buffer[received]='\0';
     if(status != sf::Socket::Done)
     {
         return "ERROR";
