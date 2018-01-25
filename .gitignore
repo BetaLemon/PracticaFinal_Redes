@@ -1,2 +1,9 @@
-*.depend
-*.layout
+
+### CodeBlocks ###
+# specific to CodeBlocks IDE
+Server/*.layout
+Server/*.depend
+
+# generated directories
+Server/bin/
+Server/obj/
