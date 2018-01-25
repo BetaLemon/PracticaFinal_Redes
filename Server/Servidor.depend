@@ -115,7 +115,7 @@
 
 1516723826 D
 
-1516878066 source:/home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/Source.cpp
+1516880862 source:/home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/Source.cpp
 	<pugixml.cpp>
 	<iostream>
 	<mysql_connection.h>
@@ -219,7 +219,7 @@
 	"resultset.h"
 	<string>
 
-1516878067 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/pugixml-1.8/src/pugixml.cpp
+1516880863 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/pugixml-1.8/src/pugixml.cpp
 	"pugixml.hpp"
 	<stdlib.h>
 	<stdio.h>
@@ -253,7 +253,7 @@
 	<new>
 	<stdint.h>
 
-1516878067 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/pugixml-1.8/src/pugixml.hpp
+1516880863 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/pugixml-1.8/src/pugixml.hpp
 	"pugiconfig.hpp"
 	<stddef.h>
 	<exception>
@@ -269,9 +269,9 @@
 	<iosfwd>
 	<string>
 
-1516878067 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/pugixml-1.8/src/pugiconfig.hpp
+1516880863 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/pugixml-1.8/src/pugiconfig.hpp
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/mysql_connection.h
+1516880862 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/mysql_connection.h
 	<cppconn/connection.h>
 	<boost/shared_ptr.hpp>
 	<boost/scoped_ptr.hpp>
@@ -283,7 +283,7 @@
 	<boost/shared_ptr.hpp>
 	<boost/scoped_ptr.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/connection.h
+1516880862 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/connection.h
 	<map>
 	"build_config.h"
 	"warning.h"
@@ -297,9 +297,9 @@
 	"sqlstring.h"
 	"variant.h"
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/build_config.h
+1516880862 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/build_config.h
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/warning.h
+1516880862 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/warning.h
 	<stdexcept>
 	<string>
 	<memory>
@@ -313,7 +313,7 @@
 	<memory>
 	"sqlstring.h"
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/sqlstring.h
+1516880862 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/sqlstring.h
 	<string>
 	<algorithm>
 	"build_config.h"
@@ -325,7 +325,7 @@
 	"build_config.h"
 	<iostream>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/variant.h
+1516880862 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/variant.h
 	<string>
 	<map>
 	<list>
@@ -345,7 +345,7 @@
 	"sqlstring.h"
 	"exception.h"
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/exception.h
+1516880862 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/exception.h
 	"build_config.h"
 	<stdexcept>
 	<string>
@@ -357,11 +357,11 @@
 	<string>
 	<memory>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/driver.h
+1516880862 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/driver.h
 	"connection.h"
 	"build_config.h"
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/resultset.h
+1516880862 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/resultset.h
 	"config.h"
 	<list>
 	<map>
@@ -381,7 +381,7 @@
 	"sqlstring.h"
 	"resultset_metadata.h"
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/config.h
+1516880862 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/config.h
 	<stdint.h>
 	<inttypes.h>
 	<stdint.h>
@@ -391,13 +391,13 @@
 	<inttypes.h>
 	<stdint.h>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/resultset_metadata.h
+1516880862 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/resultset_metadata.h
 	"sqlstring.h"
 	"datatype.h"
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/datatype.h
+1516880862 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/datatype.h
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/statement.h
+1516880862 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/statement.h
 	"config.h"
 	"resultset.h"
 	<string>
@@ -413,7 +413,7 @@
 	"resultset.h"
 	<string>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/prepared_statement.h
+1516880862 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/include/cppconn/prepared_statement.h
 	<iostream>
 	"statement.h"
 
@@ -625,18 +625,18 @@
 1516816660 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/Main.hpp
 	<SFML/Config.hpp>
 
-1516878066 source:/home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/Room.cpp
+1516880861 source:/home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/Room.cpp
 	"Room.hpp"
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/Room.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/Room.hpp
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Main.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Main.hpp
 	<SFML/Config.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Config.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Config.hpp
 	"TargetConditionals.h"
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network.hpp
 	<SFML/System.hpp>
 	<SFML/Network/Ftp.hpp>
 	<SFML/Network/Http.hpp>
@@ -649,7 +649,7 @@
 	<SFML/Network/TcpSocket.hpp>
 	<SFML/Network/UdpSocket.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System.hpp
 	<SFML/Config.hpp>
 	<SFML/System/Clock.hpp>
 	<SFML/System/Err.hpp>
@@ -669,21 +669,21 @@
 	<SFML/System/Vector2.hpp>
 	<SFML/System/Vector3.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Clock.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Clock.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/Time.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Export.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Export.hpp
 	<SFML/Config.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Time.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Time.hpp
 	<SFML/System/Export.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Err.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Err.hpp
 	<SFML/System/Export.hpp>
 	<ostream>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/FileInputStream.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/FileInputStream.hpp
 	<SFML/Config.hpp>
 	<SFML/System/Export.hpp>
 	<SFML/System/InputStream.hpp>
@@ -691,32 +691,32 @@
 	<cstdio>
 	<string>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/InputStream.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/InputStream.hpp
 	<SFML/Config.hpp>
 	<SFML/System/Export.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/NonCopyable.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/NonCopyable.hpp
 	<SFML/System/Export.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Lock.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Lock.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/NonCopyable.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/MemoryInputStream.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/MemoryInputStream.hpp
 	<SFML/Config.hpp>
 	<SFML/System/InputStream.hpp>
 	<SFML/System/Export.hpp>
 	<cstdlib>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Mutex.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Mutex.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/NonCopyable.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Sleep.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Sleep.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/Time.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/String.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/String.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/Utf.hpp>
 	<iterator>
@@ -724,7 +724,7 @@
 	<string>
 	<SFML/System/String.inl>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Utf.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Utf.hpp
 	<SFML/Config.hpp>
 	<algorithm>
 	<locale>
@@ -732,40 +732,40 @@
 	<cstdlib>
 	<SFML/System/Utf.inl>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Utf.inl
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Utf.inl
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/String.inl
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/String.inl
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Thread.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Thread.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/NonCopyable.hpp>
 	<cstdlib>
 	<SFML/System/Thread.inl>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Thread.inl
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Thread.inl
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/ThreadLocal.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/ThreadLocal.hpp
 	<SFML/System/Export.hpp>
 	<SFML/System/NonCopyable.hpp>
 	<cstdlib>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/ThreadLocalPtr.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/ThreadLocalPtr.hpp
 	<SFML/System/ThreadLocal.hpp>
 	<SFML/System/ThreadLocalPtr.inl>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/ThreadLocalPtr.inl
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/ThreadLocalPtr.inl
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Vector2.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Vector2.hpp
 	<SFML/System/Vector2.inl>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Vector2.inl
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Vector2.inl
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Vector3.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Vector3.hpp
 	<SFML/System/Vector3.inl>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Vector3.inl
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/System/Vector3.inl
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/Ftp.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/Ftp.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/Network/TcpSocket.hpp>
 	<SFML/System/NonCopyable.hpp>
@@ -773,25 +773,25 @@
 	<string>
 	<vector>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/Export.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/Export.hpp
 	<SFML/Config.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/TcpSocket.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/TcpSocket.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/Network/Socket.hpp>
 	<SFML/System/Time.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/Socket.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/Socket.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/Network/SocketHandle.hpp>
 	<SFML/System/NonCopyable.hpp>
 	<vector>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/SocketHandle.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/SocketHandle.hpp
 	<SFML/Config.hpp>
 	<basetsd.h>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/Http.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/Http.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/Network/IpAddress.hpp>
 	<SFML/Network/TcpSocket.hpp>
@@ -800,28 +800,28 @@
 	<map>
 	<string>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/IpAddress.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/IpAddress.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/System/Time.hpp>
 	<istream>
 	<ostream>
 	<string>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/Packet.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/Packet.hpp
 	<SFML/Network/Export.hpp>
 	<string>
 	<vector>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/SocketSelector.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/SocketSelector.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/System/Time.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/TcpListener.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/TcpListener.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/Network/Socket.hpp>
 	<SFML/Network/IpAddress.hpp>
 
-1516878066 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/UdpSocket.hpp
+1516880861 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Network/UdpSocket.hpp
 	<SFML/Network/Export.hpp>
 	<SFML/Network/Socket.hpp>
 	<SFML/Network/IpAddress.hpp>
