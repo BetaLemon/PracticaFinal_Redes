@@ -231,7 +231,7 @@ void GestionarCliente(sf::TcpSocket *socket){
         std::string* msg;
         *msg = "PACO";
         socket->send(msg, sizeof(msg));*/
-        SendFromSocket(socket, "YAY");
+        SendFromSocket(socket, "YAAAY");
 
     }
     //while(!playerExit && socket->)

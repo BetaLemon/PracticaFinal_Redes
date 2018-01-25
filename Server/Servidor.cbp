@@ -39,7 +39,9 @@
 			<Add library="lib/libmysqlcppconn.so" />
 			<Add library="SFML/lib/libsfml-network.so" />
 			<Add library="SFML/lib/libsfml-system.so" />
+			<Add library="SFML/lib/libsfml-window.so" />
 			<Add directory="lib" />
+			<Add directory="SFML/lib" />
 		</Linker>
 		<Unit filename="../.gitignore" />
 		<Unit filename="Room.cpp" />
