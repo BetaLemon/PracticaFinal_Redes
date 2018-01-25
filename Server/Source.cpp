@@ -19,7 +19,7 @@
 //#define HOST "tcp://127.0.0.1:3306"
 #define HOST "tcp://127.0.0.1:3306"
 #define USER "root"
-#define PASSWORD "over9000"
+#define PASSWORD "eucaliptus"
 #define DATABASE "MUDGAMEDB"
 
 #define MAX_BYTES 100
@@ -231,11 +231,13 @@ void recorrerNodosJugadores(){
     }
 }
 
-void GestionarCliente(sf::TcpSocket *socket){
+void GestionarCliente(sql::Statement * stmt, sf::TcpSocket *socket){
     bool playerExit = false;
-    while(!playerExit && socket->Done)
+    while(!playerExit)
     {
-
+        //LOGIN(stmt, socket);
+        Send(socket, "Hola.");
+        Receive(socket);
     }
     //while(!playerExit && socket->)
 }
@@ -265,7 +267,7 @@ int main(){
             std::cout << "New Socket Accepted from: "<< socket.getRemoteAddress() <<":"<<socket.getRemotePort()<<std::endl;
             sockets.push_back(&socket);
             if(fork() == 0){
-                GestionarCliente(&socket);
+                GestionarCliente(stmt, &socket);
                 exit(0);
             }
         }
