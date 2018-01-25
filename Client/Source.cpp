@@ -14,8 +14,9 @@
 #include <sstream>
 #include <SFML/Network.hpp>
 
-#define HOST ""
+#define HOST "127.0.0.1"
 #define PORT 50000
+#define MAX_BUFF_SIZE sizeof(std::string)*100
 
 // Una función que permite convertir un int a string (no me funcionaba to_string()):
 template <typename T>
@@ -27,12 +28,27 @@ std::string NumToStr ( T Number )
 }
 
 int main(){
-    sf::Socket::Status stat;
+    sf::Socket::Status status;
     sf::TcpSocket sock;
-    stat = sock.connect(HOST, PORT, sf::seconds(15.f));
 
-    std::cout << stat;
+    status = sock.connect(HOST, PORT, sf::seconds(15.f));
+
+    if (status != sf::Socket::Done)
+    {
+        std::cout << "Failed to connect!"<<std::endl;
+    }
+    else{
+        std::cout << "Connected with status: "<<status<<std::endl;
+    }
 
 
+    std::size_t receivedSize;
+    std::string* receivedMsg;
+
+    sock.receive(receivedMsg, MAX_BUFF_SIZE, receivedSize);
+
+    std::cout << status;
+
+    while(true);
     return 0;
 }
