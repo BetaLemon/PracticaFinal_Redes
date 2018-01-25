@@ -22,6 +22,8 @@
 #define PASSWORD "over9000"
 #define DATABASE "MUDGAMEDB"
 
+#define MAX_BYTES 100
+
 // Una función que permite convertir un int a string (no me funcionaba to_string()):
 template <typename T>
   std::string NumToStr ( T Number )
@@ -37,6 +39,19 @@ std::string usuario;    // Almacena el nombre de usuario, una vez se ha logueado
 // Estructuras de datos que almacenan información de manera similar a la base de datos respectiva:
 struct Raza { int id; std::string nombre; int vida_base; int fuerza_base; int velocidad_base; };
 struct Personaje { std::string nombre, playerID, raceID, vida, fuerza,  velocidad, oro; };
+
+void Send(sf::TcpSocket* s, std::string msg){
+    s->send(msg.c_str(), msg.length());
+}
+
+std::string Receive(sf::TcpSocket* s){
+    char buffer[MAX_BYTES];
+    size_t receivedBytes;
+    if(s->receive(buffer, MAX_BYTES, receivedBytes) != sf::Socket::Done){ std::cout << "Error receiving data." << std::endl; }
+    buffer[receivedBytes] = '\0';
+    std::string tmp = buffer;
+    return tmp;
+}
 
 // Una funcion con la que hemos encapsulado la comprobación de la existencia del nombre de usuario:
 bool compruebaUsuario(std::string usuario, sql::Statement* statem){
@@ -131,23 +146,23 @@ void CrearPersonaje(sql::Statement* stmt){
 }
 
 // Función que se encarga del Login: ( devuelve true si el usuario necesita registrarse! )
-bool LOGIN(sql::Statement* stmt){
+bool LOGIN(sql::Statement* stmt, sf::TcpSocket* s){
     bool isLoggedIn = false;    // Para el control del bucle. (si está Logged In o no).
     bool needsRegister = false; // Para hacer que el usuario se registre.
-    std::cout << "LOGIN" << std::endl;
+        //std::cout << "LOGIN" << std::endl;
     // Mientras no haya iniciado su sesión:
     while(!isLoggedIn){
         // El usuario introduce el usuario:
         std::string user, passwd;
-        std::cout << "Usuario: ";
-        std::cin >> user;
+        Send(s,"Usuario: ");
+        user = Receive(s);
         // Se comprueba si el nombre de usuario está en la base de datos:
         if(compruebaUsuario(user, stmt)){
         // Si está, entonces, que pregunte por la contraseña:
             bool isCorrect = false; // Para controlar el bucle.
             while(!isCorrect){
-                std::cout << "Contraseña: ";
-                std::cin >> passwd;
+                Send(s, "Contraseña: ");
+                passwd = Receive(s);
                 isCorrect = compruebaUsuarioPassword(user, passwd, stmt);    // Si ha resultado, entonces es correcto.
             }
             isLoggedIn = true;      // Se ha logueado...
@@ -157,10 +172,9 @@ bool LOGIN(sql::Statement* stmt){
         // Si no está, imprime que no existe.
         else{
             char input;
-            std::cout << "El usuario " << user << " no existe." << std::endl;
             // Le preguntamos si quiere registrarse:
-            std::cout << "¿Quieres registrarte? Y/n: ";
-            std::cin >> input;
+            Send(s, "El usuario " + user + " no existe.\n¿Quieres registrarte? Y/n: ");
+            input = Receive(s).at(0);
             if(input == 'y' || input == 'Y'){
                 needsRegister = true;   // Si dice que sí, entonces necesita registrarse.
                 break;
@@ -169,7 +183,7 @@ bool LOGIN(sql::Statement* stmt){
                 needsRegister = false;  // No necesita registrarse, porque no quiere.
                 break;
             }
-            else{ std::cout << "Respuesta no válida." << std::endl; }
+            else{ Send(s,"Respuesta no válida. Pulsa ENTER para reintentar.\n"); Receive(s);}   // El receive sólo es para cumplir con el ciclo.
         }
     }
     return needsRegister;  // Devuelve si necesita registrar.
@@ -217,21 +231,10 @@ void recorrerNodosJugadores(){
     }
 }
 
-void SendFromSocket(sf::TcpSocket* s, std::string msg){
-    std::string * tmp;
-    *tmp = msg;
-    s->send(tmp, tmp->length());
-}
-
 void GestionarCliente(sf::TcpSocket *socket){
     bool playerExit = false;
     while(!playerExit && socket->Done)
     {
-    /*
-        std::string* msg;
-        *msg = "PACO";
-        socket->send(msg, sizeof(msg));*/
-        SendFromSocket(socket, "YAAAY");
 
     }
     //while(!playerExit && socket->)
@@ -268,7 +271,7 @@ int main(){
         }
 
 
-        if(LOGIN(stmt)){ REGISTER(stmt); }  // Si el usuario ha elegido registrarse, LOGIN devuelve true, para ejecutar REGISTER().
+        //if(LOGIN(stmt)){ REGISTER(stmt); }  // Si el usuario ha elegido registrarse, LOGIN devuelve true, para ejecutar REGISTER().
 
         std::cout << "Empieza el juego" << std::endl;
 
