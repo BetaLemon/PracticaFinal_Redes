@@ -25,7 +25,7 @@
 //#define HOST "tcp://127.0.0.1:3306"
 #define HOST "tcp://127.0.0.1:3306"
 #define USER "root"
-#define PASSWORD "over9000"
+#define PASSWORD "eucaliptus"
 #define DATABASE "MUDGAMEDB"
 
 #define MAX_BUFF_SIZE 100
@@ -242,6 +242,7 @@ void REGISTER(sql::Statement* stmt, sf::TcpSocket* s){
 }
 
 std::vector<Room*> LoadRoomsMap(){
+    pugi::xml_parse_result result = doc.load_file("worldmap.xml");
     pugi::xml_node roomsNode = doc.child("rooms");
     std::vector<Room*> rooms;
     for(pugi::xml_node roomNode = roomsNode.child("room"); roomNode; roomNode = roomNode.next_sibling("room")){
@@ -346,7 +347,6 @@ void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
 
 int main(){
     try{
-        CargarXML();
         //Shared Memory Reserved
         int shmID = shmget(IPC_PRIVATE, sizeof(SharedData), IPC_CREAT | 0666);
         if(shmID < 0) std::cout << "[FAILED RESERVING SHARED MEMORY]"<< std::endl;
@@ -399,29 +399,6 @@ int main(){
 
         system("pause");
 
-        /* EJEMPLOS DE SELECT Y SELECT COUNT
-
-        sql::ResultSet* res = stmt->executeQuery("SELECT PlayerName, PlayerPassword from Players");
-        std::cout << "USERNAME      |       USERPASSWORD" << std::endl;
-        while(res->next()){
-            std::cout << res->getString("PlayerName") << "    |    " << res->getString("PlayerPassword") << std::endl;
-        }
-        delete(res);
-        res = stmt->executeQuery("SELECT count(*) FROM Players WHERE PlayerName='player1' and PlayerPassword = '1234'");
-        if(res->next()){
-            int existe = res->getInt(1);
-            if(existe == 1){ std::cout << "El usuario existe en la BD. La autenticación es correcta." << std::endl;}
-            else{ std::cout << "El usuario NO existe en la BD." << std::endl;}
-        }
-        delete(res);
-        delete(stmt);
-        delete(con);*/
-
-        /* EJEMPLO de INSERT Y UPDATE
-        int numRows = stmt->executeUpdate("INSERT into Players(PlayerName,PlayerPassword) values ('player3', '1234')");
-        if(numRows == 1){ std::cout << "Se ha insertado un nuevo usuario\n"; }
-        delete(stmt);
-        delete(con);*/
     }
     catch(sql::SQLException &e){
         std::cout << "Se produce el error " << e.getErrorCode() << std::endl;
