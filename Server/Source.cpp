@@ -2,6 +2,9 @@
     #define PUGIXML HEADER ONLY
 #endif  // DEBUG
 
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
 #include <pugixml.cpp>
 #include <iostream>
 #include <mysql_connection.h>
@@ -15,11 +18,12 @@
 #include <sstream>
 #include <SFML/Main.hpp>
 #include <SFML/Network.hpp>
+#include "RoomManager.hpp"
 
 //#define HOST "tcp://127.0.0.1:3306"
 #define HOST "tcp://127.0.0.1:3306"
 #define USER "root"
-#define PASSWORD "eucaliptus"
+#define PASSWORD "over9000"
 #define DATABASE "MUDGAMEDB"
 
 #define MAX_BYTES 100
@@ -43,6 +47,11 @@ struct Personaje { std::string nombre, playerID, raceID, vida, fuerza,  velocida
 void Send(sf::TcpSocket* s, std::string msg){
     s->send(msg.c_str(), msg.length());
 }
+
+struct SharedData
+{
+    std::vector<sf::TcpSocket*> sockets;
+};
 
 std::string Receive(sf::TcpSocket* s){
     char buffer[MAX_BYTES];
@@ -231,21 +240,80 @@ void recorrerNodosJugadores(){
     }
 }
 
-void GestionarCliente(sql::Statement * stmt, sf::TcpSocket *socket){
+std::vector<Room*> LoadRoomsMap(){
+    pugi::xml_node RoomNode = doc.child("rooms");
+    std::vector<Room*> room;
+    for(pugi::xml_node RoomNode = RoomNode.child("room"); RoomNode; RoomNode = RoomNode.next_sibling("room")){
+        std::cout << "Se detecta un nodo 'jugador' dentro de la raiz 'jugadores'" << std::endl;
+        Room* tmp = new Room(); //Crear rooms vacias.
+        room.push_back(tmp);
+    }
+    for(pugi::xml_node RoomNode = RoomNode.child("room"); RoomNode; RoomNode = RoomNode.next_sibling("room")){
+        std::cout << RoomNode.attribute("ID").as_int() << std::endl;
+        Room* tmp = room[RoomNode.attribute("ID").as_int()];
+
+        for(pugi::xml_node RoomNodeDir = RoomNodeDir.first_child(); RoomNodeDir; RoomNodeDir.next_sibling()){
+
+            //room[0]->GetN();
+
+        }
+    }
+    return room;
+}
+
+void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
     bool playerExit = false;
+    Room* currentRoom;
+    SharedData* shd = (struct SharedData*)shmat(shmID, NULL, 0);
+
     while(!playerExit)
     {
         //LOGIN(stmt, socket);
-        Send(socket, "Hola.");
-        Receive(socket);
+
+        while(true)
+        {
+
+            Send(socket, currentRoom->GetMessage());
+            std::string tmp = Receive(socket);
+
+            if(tmp == "N")
+            {
+                currentRoom = currentRoom->GetN();
+            }
+            else if(tmp == "S")
+            {
+                currentRoom = currentRoom->GetS();
+            }
+            else if(tmp == "E")
+            {
+                currentRoom = currentRoom->GetE();
+            }
+            else if(tmp == "W")
+            {
+                currentRoom = currentRoom->GetW();
+            }
+            else
+            {
+
+            }
+
+        }
+
+
+
     }
     //while(!playerExit && socket->)
 }
+
 
 // LISTA DE DUDAS PARA JUEVES: wait(),
 
 int main(){
     try{
+        //Shared Memory Reserved
+        int shmID = shmget(IPC_PRIVATE, sizeof(SharedData), IPC_CREAT | 0666);
+        if(shmID < 0) std::cout << "[FAILED RESERVING SHARED MEMORY]"<< std::endl;
+        SharedData* shd = (struct SharedData*)shmat(shmID, NULL, 0);
         // Inicialización para MySQL:
         sql::Driver* driver = get_driver_instance();
         sql::Connection* con = driver->connect(HOST, USER, PASSWORD);
@@ -253,11 +321,14 @@ int main(){
 
         sql::Statement* stmt = con->createStatement();
 
+        //RoomManager::Instance()->
         // Lógica del servidor:
         std::cout << "Listening..." << std::endl;
         sf::TcpListener listener;
         listener.listen(50000);
         bool gameRunning = true;
+
+        //SharedData shd;
         std::vector<sf::TcpSocket*> sockets;
 
         while(gameRunning){
@@ -267,15 +338,18 @@ int main(){
             std::cout << "New Socket Accepted from: "<< socket.getRemoteAddress() <<":"<<socket.getRemotePort()<<std::endl;
             sockets.push_back(&socket);
             if(fork() == 0){
-                GestionarCliente(stmt, &socket);
+                GestionarCliente(shmID, stmt, &socket);
                 exit(0);
             }
         }
 
-
+        for(int i = 0; i < sockets.size(); i++)
+        {
+            sockets[i]->disconnect();
+        }
         //if(LOGIN(stmt)){ REGISTER(stmt); }  // Si el usuario ha elegido registrarse, LOGIN devuelve true, para ejecutar REGISTER().
 
-        std::cout << "Empieza el juego" << std::endl;
+        //std::cout << "Empieza el juego" << std::endl;
 
         //CargarXML();
         //recorrerNodosJugadores();
