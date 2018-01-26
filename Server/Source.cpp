@@ -325,6 +325,7 @@ void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
     }
 
     shmdt(shd);
+    socket.disconnect();
     //while(!playerExit && socket->)
 }
 
@@ -372,6 +373,7 @@ int main(){
         {
             sockets[i]->disconnect();
         }
+        listener.close();
         //if(LOGIN(stmt)){ REGISTER(stmt); }  // Si el usuario ha elegido registrarse, LOGIN devuelve true, para ejecutar REGISTER().
 
         //std::cout << "Empieza el juego" << std::endl;
