@@ -241,41 +241,45 @@ void REGISTER(sql::Statement* stmt, sf::TcpSocket* s){
    // CrearPersonaje(stmt);   // Iniciamos el proceso de creación de personaje.
 }
 
-void CargarXML(){
-    //pugi::xml_document doc;
-    pugi::xml_parse_result result = doc.load_file("worldmap.xml");
-    std::cout << "Se ha cargado: " << result.description() << std::endl;
-}
-
-void recorrerNodosJugadores(){
-    pugi::xml_node nodoJugadores = doc.child("jugadores");
-    for(pugi::xml_node nodoJugador = nodoJugadores.child("jugador"); nodoJugador; nodoJugador = nodoJugador.next_sibling("jugador")){
-        std::cout << "Se detecta un nodo 'jugador' dentro de la raiz 'jugadores'" << std::endl;
-    }
-}
-
 std::vector<Room*> LoadRoomsMap(){
     pugi::xml_node roomsNode = doc.child("rooms");
     std::vector<Room*> rooms;
     for(pugi::xml_node roomNode = roomsNode.child("room"); roomNode; roomNode = roomNode.next_sibling("room")){
-        std::cout << "Se detecta un nodo 'jugador' dentro de la raiz 'jugadores'" << std::endl;
+        std::cout << "Se han detectado las rooms" << std::endl;
         rooms.push_back(new Room());
 
     }
     for(pugi::xml_node roomNode = roomsNode.child("room"); roomNode; roomNode = roomNode.next_sibling("room")){
         std::cout << roomNode.attribute("ID").as_int() << std::endl;
         Room* tmp = rooms[roomNode.attribute("ID").as_int()];
-
+        //debug(roomNode.attribute("ID").as_int());
         std::string msg = roomNode.child_value("MSG");
         int n = atoi(roomNode.child_value("N"));
         int s = atoi(roomNode.child_value("S"));
         int e = atoi(roomNode.child_value("E"));
         int w = atoi(roomNode.child_value("W"));
-        tmp = new Room(msg,rooms[n],rooms[s],rooms[e],rooms[w]);
-        //for(pugi::xml_node RoomNodeDir = RoomNodeDir.first_child(); RoomNodeDir; RoomNodeDir.next_sibling()){
 
-        //}
+        tmp->SetMSG(msg);
+        n == -1 ? tmp->SetN(nullptr) : tmp->SetN(rooms[n]);
+        s == -1 ? tmp->SetS(nullptr) : tmp->SetS(rooms[s]);
+        e == -1 ? tmp->SetE(nullptr) : tmp->SetE(rooms[e]);
+        w == -1 ? tmp->SetW(nullptr) : tmp->SetW(rooms[w]);
+        //for(pugi::xml_node RoomNodeDir = RoomNodeDir.first_child(); RoomNodeDir; RoomNodeDir.next_sibling()){
+        std::cout << "MSG: ";
+        debug(tmp->GetMessage());
+        std::cout << "N: ";
+        debug(tmp->GetN());
+        std::cout << "S: ";
+        debug(tmp->GetS());
+        std::cout << "E: ";
+        debug(tmp->GetE());
+        std::cout << "W: ";
+        debug(tmp->GetW());
+
     }
+
+
+
     return rooms;
 }
 
@@ -297,25 +301,33 @@ void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
             Send(socket, currentRoom->GetMessage());
             std::string tmp = Receive(socket);
 
-            if(tmp == "N")
+            Room* prevRoom = currentRoom;
+
+            if(tmp == "N" || tmp == "n")
             {
                 currentRoom = currentRoom->GetN();
             }
-            else if(tmp == "S")
+            else if(tmp == "S" || tmp == "s")
             {
                 currentRoom = currentRoom->GetS();
             }
-            else if(tmp == "E")
+            else if(tmp == "E" || tmp == "e")
             {
                 currentRoom = currentRoom->GetE();
             }
-            else if(tmp == "W")
+            else if(tmp == "W" || tmp == "w")
             {
                 currentRoom = currentRoom->GetW();
             }
             else
             {
+                Send(socket, "!You can only go N, S, E or W!\n");
+            }
 
+            if(currentRoom == nullptr)
+            {
+                Send(socket, "!You shall not pass!\n");
+                currentRoom = prevRoom;
             }
 
         }
