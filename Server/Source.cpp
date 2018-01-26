@@ -26,7 +26,9 @@
 #define PASSWORD "over9000"
 #define DATABASE "MUDGAMEDB"
 
-#define MAX_BYTES 100
+#define MAX_BUFF_SIZE 100
+
+#define DEBUG true
 
 // Una función que permite convertir un int a string (no me funcionaba to_string()):
 template <typename T>
@@ -36,6 +38,11 @@ template <typename T>
      ss << Number;
      return ss.str();
   }
+
+template <typename T>
+void debug(T txt){
+    if(DEBUG){ std:: cout << txt << std::endl; }
+}
 
 pugi::xml_document doc; // Almacena la informacion relacionada al documento XML.
 std::string usuario;    // Almacena el nombre de usuario, una vez se ha logueado.
@@ -54,12 +61,19 @@ struct SharedData
 };
 
 std::string Receive(sf::TcpSocket* s){
-    char buffer[MAX_BYTES];
+    char buffer[MAX_BUFF_SIZE];
     size_t receivedBytes;
-    if(s->receive(buffer, MAX_BYTES, receivedBytes) != sf::Socket::Done){ std::cout << "Error receiving data." << std::endl; }
+    if(s->receive(buffer, MAX_BUFF_SIZE, receivedBytes) != sf::Socket::Done){ std::cout << "Error receiving data." << std::endl; }
     buffer[receivedBytes] = '\0';
     std::string tmp = buffer;
+    debug(tmp + " was received.");
     return tmp;
+}
+
+void Send(sf::TcpSocket* s, std::string msg){
+    s->send(msg.c_str(), msg.length());
+    debug(msg);
+    if(msg.at(0) == '!'){ Receive(s); }
 }
 
 // Una funcion con la que hemos encapsulado la comprobación de la existencia del nombre de usuario:
@@ -79,7 +93,7 @@ bool compruebaUsuarioPassword(std::string usuario, std::string contras, sql::Sta
 }
 
 // Función grande que se encarga de todo el proceso de creación de personaje:
-void CrearPersonaje(sql::Statement* stmt){
+void CrearPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
     std::vector<Raza> razas;    // Almacenará todas las razas disponibles (obtenidas de la BD).
     int enteredRace;            // Almacena la raza que ha seleccionado el jugador.
     std::string enteredName;    // Almacena el nombre del personaje introducido por el jugador.
@@ -94,12 +108,14 @@ void CrearPersonaje(sql::Statement* stmt){
     }
     delete(res);    // Ya no necesitamos el resultado.
 
-    std::cout << "Elige una raza para tu nuevo personaje:" << std::endl;
-    std::cout << "#   RAZA\t\t\tVIDA\tFUERZA\tVELOCIDAD" << std::endl;
+    Send(s,"!Elige una raza para tu nuevo personaje:\n"); Receive(s);
+    Send(s,"!#   RAZA\t\t\tVIDA\tFUERZA\tVELOCIDAD\n");  Receive(s);
     // Imprime todas las razas almacenadas en el vector de STL:
+    std::string sendStr = "";
     for(int i = 0; i < razas.size(); i++){
-        std::cout << i+1 << " - " << razas[i].nombre << "\t\t\t" << razas[i].vida_base << "\t" << razas[i].fuerza_base << "\t" << razas[i].velocidad_base << std::endl;
+        sendStr += NumToStr(i+1) + " - " + razas[i].nombre + "\t\t\t" + NumToStr(razas[i].vida_base) + "\t" + NumToStr(razas[i].fuerza_base) + "\t" + NumToStr(razas[i].velocidad_base + "\n");
     }
+    Send(s, "!" + sendStr);
     // Mientras no tengamos una raza válida, pide una raza al usuario:
     while(!validRace){
         std::cout << "Introduce la raza que hayas elegido (#): ";
@@ -158,7 +174,7 @@ void CrearPersonaje(sql::Statement* stmt){
 bool LOGIN(sql::Statement* stmt, sf::TcpSocket* s){
     bool isLoggedIn = false;    // Para el control del bucle. (si está Logged In o no).
     bool needsRegister = false; // Para hacer que el usuario se registre.
-        //std::cout << "LOGIN" << std::endl;
+    Send(s, "!LOGIN\n");
     // Mientras no haya iniciado su sesión:
     while(!isLoggedIn){
         // El usuario introduce el usuario:
@@ -182,7 +198,7 @@ bool LOGIN(sql::Statement* stmt, sf::TcpSocket* s){
         else{
             char input;
             // Le preguntamos si quiere registrarse:
-            Send(s, "El usuario " + user + " no existe.\n¿Quieres registrarte? Y/n: ");
+            Send(s, "El usuario " + user + " no existe.\n¿Quieres registrarte? y/N: ");
             input = Receive(s).at(0);
             if(input == 'y' || input == 'Y'){
                 needsRegister = true;   // Si dice que sí, entonces necesita registrarse.
@@ -192,39 +208,39 @@ bool LOGIN(sql::Statement* stmt, sf::TcpSocket* s){
                 needsRegister = false;  // No necesita registrarse, porque no quiere.
                 break;
             }
-            else{ Send(s,"Respuesta no válida. Pulsa ENTER para reintentar.\n"); Receive(s);}   // El receive sólo es para cumplir con el ciclo.
+            else{ Send(s,"!Respuesta no válida.\n");}   // El receive sólo es para cumplir con el ciclo.
         }
     }
     return needsRegister;  // Devuelve si necesita registrar.
 }
 
 // Función que se encarga del Registro:
-void REGISTER(sql::Statement* stmt){
+void REGISTER(sql::Statement* stmt, sf::TcpSocket* s){
     std::string user, passwd, checkPasswd;  // Almacena temporalmente la información del usuario.
     bool passwdMatches = false;             // Booleano para controlar si la contraseña ha coincidido. Está en false para que entre una vez al while.
     bool nameIsTaken = true;                // Booleano para controlar si el nombre de usuario ya existe. Esta en false para que entre una vez al while.
-    std::cout << "Vas a registrarte. Por favor, introduce la siguiente información:" << std::endl;
+    //std::cout << "Vas a registrarte. Por favor, introduce la siguiente información:" << std::endl;
     while(nameIsTaken){
-        std::cout << "Nombre de usuario: ";
-        std::cin >> user;   // El usuario introduce su nombre de usuario
+        Send(s,"Vas a registrarte. Por favor, introduce la siguiente información:\nNombre de usuario: ");
+        user = Receive(s);   // El usuario introduce su nombre de usuario
         nameIsTaken = compruebaUsuario(user, stmt);
-        if(nameIsTaken){ std::cout << "El nombre de usuario " << user << " ya existe. Prueba otro:" << std::endl;}
+        if(nameIsTaken){ Send(s, "!El nombre de usuario " + user + " ya existe. Prueba otro:\n"); Receive(s); }
     }
     while(!passwdMatches){
-        std::cout << "Contraseña: ";
-        std::cin >> passwd;
-        std::cout << "Repite la contraseña: ";
-        std::cin >> checkPasswd;
+        Send(s, "Contraseña: ");
+        passwd = Receive(s);
+        Send(s, "Repite la contraseña: ");
+        checkPasswd = Receive(s);
         if(checkPasswd == passwd){ passwdMatches = true;}   // Si son iguales, significa que coinciden.
-        else { std::cout << "Las contraseñas no coinciden. Vuelve a intentar:" << std::endl;}
+        else { Send(s, "!Las contraseñas no coinciden. Vuelve a intentar:\n"); Receive(s);}  // ATENCIÓN, ROMPEMOS CICLO?
     }
     // El usuario ha usado un nombre de usuario y contraseña válidos. Lo insertamos en la base de datos.
     int inserted = stmt->executeUpdate("INSERT into Players(PlayerName,PlayerPassword) values ('" + user + "', '" + passwd + "')");
-    if(inserted == 1){ std::cout << "Te has registrado, " << user << ".\n"; }
+    if(inserted == 1){ Send(s, "!Te has registrado, " + user + ".\n"); Receive(s); }
 
     usuario = user; // Almacenamos su nombre de usuario.
 
-    CrearPersonaje(stmt);   // Iniciamos el proceso de creación de personaje.
+   // CrearPersonaje(stmt);   // Iniciamos el proceso de creación de personaje.
 }
 
 void CargarXML(){
@@ -266,6 +282,8 @@ void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
     Room* currentRoom;
     SharedData* shd = (struct SharedData*)shmat(shmID, NULL, 0);
 
+    if(LOGIN(stmt, socket)){ REGISTER(stmt, socket); }
+    debug("Game Start!");
     while(!playerExit)
     {
         //LOGIN(stmt, socket);
