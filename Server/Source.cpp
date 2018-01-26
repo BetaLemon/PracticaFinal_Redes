@@ -255,25 +255,24 @@ void recorrerNodosJugadores(){
 }
 
 std::vector<Room*> LoadRoomsMap(){
-    pugi::xml_node RoomNode = doc.child("rooms");
+    pugi::xml_node roomsNode = doc.child("rooms");
     std::vector<Room*> rooms;
-    for(pugi::xml_node RoomNode = RoomNode.child("room"); RoomNode; RoomNode = RoomNode.next_sibling("room")){
+    for(pugi::xml_node roomNode = roomsNode.child("room"); roomNode; roomNode = roomNode.next_sibling("room")){
         std::cout << "Se detecta un nodo 'jugador' dentro de la raiz 'jugadores'" << std::endl;
         rooms.push_back(new Room());
-    }
-    for(pugi::xml_node RoomNode = RoomNode.child("room"); RoomNode; RoomNode = RoomNode.next_sibling("room")){
-        std::cout << RoomNode.attribute("ID").as_int() << std::endl;
-        Room* tmp = rooms[RoomNode.attribute("ID").as_int()];
 
-        std::string msg = RoomNode.child_value("MSG");
-        int n = atoi(RoomNode.child_value("N"));
-        int s = atoi(RoomNode.child_value("S"));
-        int e = atoi(RoomNode.child_value("E"));
-        int w = atoi(RoomNode.child_value("W"));
+    }
+    for(pugi::xml_node roomNode = roomsNode.child("room"); roomNode; roomNode = roomNode.next_sibling("room")){
+        std::cout << roomNode.attribute("ID").as_int() << std::endl;
+        Room* tmp = rooms[roomNode.attribute("ID").as_int()];
+
+        std::string msg = roomNode.child_value("MSG");
+        int n = atoi(roomNode.child_value("N"));
+        int s = atoi(roomNode.child_value("S"));
+        int e = atoi(roomNode.child_value("E"));
+        int w = atoi(roomNode.child_value("W"));
         tmp = new Room(msg,rooms[n],rooms[s],rooms[e],rooms[w]);
         //for(pugi::xml_node RoomNodeDir = RoomNodeDir.first_child(); RoomNodeDir; RoomNodeDir.next_sibling()){
-
-            //room[0]->GetN();
 
         //}
     }
@@ -326,7 +325,7 @@ void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
     }
 
     shmdt(shd);
-    socket.disconnect();
+    socket->disconnect();
     //while(!playerExit && socket->)
 }
 
@@ -335,6 +334,7 @@ void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
 
 int main(){
     try{
+        CargarXML();
         //Shared Memory Reserved
         int shmID = shmget(IPC_PRIVATE, sizeof(SharedData), IPC_CREAT | 0666);
         if(shmID < 0) std::cout << "[FAILED RESERVING SHARED MEMORY]"<< std::endl;
