@@ -2,11 +2,13 @@
     #define PUGIXML HEADER ONLY
 #endif  // DEBUG
 
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <pugixml.cpp>
 #include <iostream>
+#include <list>
 #include <mysql_connection.h>
 #include <cppconn/driver.h>
 #include <cppconn/exception.h>
@@ -23,7 +25,7 @@
 //#define HOST "tcp://127.0.0.1:3306"
 #define HOST "tcp://127.0.0.1:3306"
 #define USER "root"
-#define PASSWORD "eucaliptus"
+#define PASSWORD "over9000"
 #define DATABASE "MUDGAMEDB"
 
 #define MAX_BUFF_SIZE 100
@@ -53,7 +55,7 @@ struct Personaje { std::string nombre, playerID, raceID, vida, fuerza,  velocida
 
 struct SharedData
 {
-    std::vector<sf::TcpSocket*> sockets;
+    std::vector<Room*> rooms;
 };
 
 std::string Receive(sf::TcpSocket* s){
@@ -254,29 +256,34 @@ void recorrerNodosJugadores(){
 
 std::vector<Room*> LoadRoomsMap(){
     pugi::xml_node RoomNode = doc.child("rooms");
-    std::vector<Room*> room;
+    std::vector<Room*> rooms;
     for(pugi::xml_node RoomNode = RoomNode.child("room"); RoomNode; RoomNode = RoomNode.next_sibling("room")){
         std::cout << "Se detecta un nodo 'jugador' dentro de la raiz 'jugadores'" << std::endl;
-        Room* tmp = new Room(); //Crear rooms vacias.
-        room.push_back(tmp);
+        rooms.push_back(new Room());
     }
     for(pugi::xml_node RoomNode = RoomNode.child("room"); RoomNode; RoomNode = RoomNode.next_sibling("room")){
         std::cout << RoomNode.attribute("ID").as_int() << std::endl;
-        Room* tmp = room[RoomNode.attribute("ID").as_int()];
+        Room* tmp = rooms[RoomNode.attribute("ID").as_int()];
 
-        for(pugi::xml_node RoomNodeDir = RoomNodeDir.first_child(); RoomNodeDir; RoomNodeDir.next_sibling()){
+        std::string msg = RoomNode.child_value("MSG");
+        int n = atoi(RoomNode.child_value("N"));
+        int s = atoi(RoomNode.child_value("S"));
+        int e = atoi(RoomNode.child_value("E"));
+        int w = atoi(RoomNode.child_value("W"));
+        tmp = new Room(msg,rooms[n],rooms[s],rooms[e],rooms[w]);
+        //for(pugi::xml_node RoomNodeDir = RoomNodeDir.first_child(); RoomNodeDir; RoomNodeDir.next_sibling()){
 
             //room[0]->GetN();
 
-        }
+        //}
     }
-    return room;
+    return rooms;
 }
 
 void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
     bool playerExit = false;
-    Room* currentRoom;
     SharedData* shd = (struct SharedData*)shmat(shmID, NULL, 0);
+     Room* currentRoom = shd->rooms[0];
 
     if(LOGIN(stmt, socket)){ REGISTER(stmt, socket); }
     debug("Game Start!");
@@ -316,6 +323,8 @@ void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
 
 
     }
+
+    shmdt(shd);
     //while(!playerExit && socket->)
 }
 
@@ -328,6 +337,8 @@ int main(){
         int shmID = shmget(IPC_PRIVATE, sizeof(SharedData), IPC_CREAT | 0666);
         if(shmID < 0) std::cout << "[FAILED RESERVING SHARED MEMORY]"<< std::endl;
         SharedData* shd = (struct SharedData*)shmat(shmID, NULL, 0);
+
+        shd->rooms = LoadRoomsMap();
         // Inicialización para MySQL:
         sql::Driver* driver = get_driver_instance();
         sql::Connection* con = driver->connect(HOST, USER, PASSWORD);

@@ -115,7 +115,7 @@
 
 1516723826 D
 
-1516972129 source:/home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/Source.cpp
+1516974308 source:/home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/Source.cpp
 	<sys/types.h>
 	<sys/ipc.h>
 	<sys/shm.h>
@@ -633,10 +633,11 @@
 1516829083 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/SFML/include/SFML/Main.hpp
 	<SFML/Config.hpp>
 
-1516963968 source:/home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/Room.cpp
+1516976210 source:/home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/Room.cpp
 	"Room.hpp"
 
-1516966553 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/Room.hpp
+1516976241 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/Room.hpp
+	<string>
 
 1516963968 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/SFML/include/SFML/Main.hpp
 	<SFML/Config.hpp>

@@ -7,9 +7,9 @@ Room::Room(){
     roomE = nullptr;
     roomW = nullptr;
 }
-Room::Room(char* msg, Room* n, Room* s, Room* e, Room* w):message(msg),roomN(n),roomS(s),roomE(e),roomW(w){}
+Room::Room(std::string msg, Room* n, Room* s, Room* e, Room* w):message(msg),roomN(n),roomS(s),roomE(e),roomW(w){}
 
-char* Room::GetMessage(){return message;}
+std::string Room::GetMessage(){return message;}
 Room* Room::GetN(){return roomN;}
 Room* Room::GetS(){return roomS;}
 Room* Room::GetE(){return roomE;}

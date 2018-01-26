@@ -2,17 +2,17 @@
     <rooms>
         <room ID = "0">
             <MSG>"Mensaje Random"</MSG>
-            <N>"1"</N>
-            <S>"-1"</S>
-            <E>"-1"</E>
-            <W>"-1"</W>
+            <N>1</N>
+            <S>-1</S>
+            <E>-1</E>
+            <W>-1</W>
         </room>
         <room ID = "1">
             <MSG>"Mensaje Random"</MSG>
-            <N>"-1"</N>
-            <S>"0"</S>
-            <E>"-1"</E>
-            <W>"-1"</W>
+            <N>-1</N>
+            <S>0</S>
+            <E>-1</E>
+            <W>-1</W>
         </room>
     </rooms>
 </root>

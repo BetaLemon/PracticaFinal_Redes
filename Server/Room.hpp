@@ -1,18 +1,20 @@
 #pragma once
+#include <string>
+
 class Room
 {
 public:
     Room();
-    Room(char* msg, Room* n, Room* s, Room* e, Room* w);
+    Room(std::string msg, Room* n, Room* s, Room* e, Room* w);
 
-    char* GetMessage();
+    std::string GetMessage();
     Room* GetN();
     Room* GetS();
     Room* GetE();
     Room* GetW();
 
 private:
-    char* message;
+    std::string message;
     Room* roomN;
     Room* roomS;
     Room* roomE;
