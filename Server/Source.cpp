@@ -243,7 +243,7 @@ void REGISTER(sql::Statement* stmt, sf::TcpSocket* s){
 
 void CargarXML(){
     //pugi::xml_document doc;
-    pugi::xml_parse_result result = doc.load_file("jugadores.xml");
+    pugi::xml_parse_result result = doc.load_file("worldmap.xml");
     std::cout << "Se ha cargado: " << result.description() << std::endl;
 }
 
@@ -283,7 +283,8 @@ std::vector<Room*> LoadRoomsMap(){
 void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
     bool playerExit = false;
     SharedData* shd = (struct SharedData*)shmat(shmID, NULL, 0);
-     Room* currentRoom = shd->rooms[0];
+    if(shd < 0) std::cout << "[ERROR ATTACHING SHARED MEMORY]"<<std::endl;
+    Room* currentRoom = shd->rooms[0];
 
     if(LOGIN(stmt, socket)){ REGISTER(stmt, socket); }
     debug("Game Start!");
@@ -338,7 +339,7 @@ int main(){
         int shmID = shmget(IPC_PRIVATE, sizeof(SharedData), IPC_CREAT | 0666);
         if(shmID < 0) std::cout << "[FAILED RESERVING SHARED MEMORY]"<< std::endl;
         SharedData* shd = (struct SharedData*)shmat(shmID, NULL, 0);
-
+        if(shd < 0) std::cout << "[ERROR ATTACHING SHARED MEMORY]"<< std::endl;
         shd->rooms = LoadRoomsMap();
         // Inicialización para MySQL:
         sql::Driver* driver = get_driver_instance();
