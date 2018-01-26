@@ -23,7 +23,7 @@
 //#define HOST "tcp://127.0.0.1:3306"
 #define HOST "tcp://127.0.0.1:3306"
 #define USER "root"
-#define PASSWORD "over9000"
+#define PASSWORD "eucaliptus"
 #define DATABASE "MUDGAMEDB"
 
 #define MAX_BUFF_SIZE 100
@@ -50,10 +50,6 @@ std::string usuario;    // Almacena el nombre de usuario, una vez se ha logueado
 // Estructuras de datos que almacenan información de manera similar a la base de datos respectiva:
 struct Raza { int id; std::string nombre; int vida_base; int fuerza_base; int velocidad_base; };
 struct Personaje { std::string nombre, playerID, raceID, vida, fuerza,  velocidad, oro; };
-
-void Send(sf::TcpSocket* s, std::string msg){
-    s->send(msg.c_str(), msg.length());
-}
 
 struct SharedData
 {

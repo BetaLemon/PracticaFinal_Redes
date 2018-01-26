@@ -134,7 +134,10 @@
 	<SFML/Network.hpp>
 	"RoomManager.hpp"
 
-1516972521 source:/home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/Source.cpp
+1516973937 source:/home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/Source.cpp
+	<sys/types.h>
+	<sys/ipc.h>
+	<sys/shm.h>
 	<pugixml.cpp>
 	<iostream>
 	<mysql_connection.h>
@@ -148,6 +151,7 @@
 	<sstream>
 	<SFML/Main.hpp>
 	<SFML/Network.hpp>
+	"RoomManager.hpp"
 
 1486736354 ver
 	<pugixml.cpp>
@@ -835,6 +839,10 @@
 	"RoomManager.hpp"
 
 1516967987 /home/axcamo/Documents/GitHub/PracticaFinal_Redes/Server/RoomManager.hpp
+	"Room.hpp"
+	<vector>
+
+1516973937 /home/lemon/Desktop/Repo/PracticaFinal_Redes/Server/RoomManager.hpp
 	"Room.hpp"
 	<vector>
 
