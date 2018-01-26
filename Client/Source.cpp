@@ -63,11 +63,34 @@ int main(){
 
     std::string in;
     //sock.send(str.c_str(), str.length());
+
     while(true)
     {
-        std::cout << Receive(&sock);
-        std::cin >> in;
-        Send(&sock, in);
+        std::string rec = Receive(&sock);
+        //std::cout << rec;
+
+        if(rec[0] == '!'){
+            rec.erase(0,1);
+            std::cout << rec;
+            Send(&sock, "!");
+        }
+        else{
+            std::cout << rec;
+            std::cin >> in;
+            Send(&sock, in);
+        }
+
+/*
+
+        if(rec.at(0) != '!'){
+            std::cout << rec;
+            std::cin >> in;
+            Send(&sock, in);
+        }
+        else{
+            rec.erase(0,1);
+            std::cout << rec;
+        }*/
 
     }
 
