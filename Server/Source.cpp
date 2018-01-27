@@ -51,7 +51,7 @@ std::string usuario;    // Almacena el nombre de usuario, una vez se ha logueado
 
 // Estructuras de datos que almacenan información de manera similar a la base de datos respectiva:
 struct Raza { int id; std::string nombre; int vida_base; int fuerza_base; int velocidad_base; };
-struct Personaje { std::string nombre, playerID, raceID, vida, fuerza,  velocidad, oro; };
+struct Personaje { int id; std::string nombre, playerID, raceID, vida, fuerza,  velocidad, oro; };
 
 struct SharedData
 {
@@ -90,6 +90,12 @@ bool compruebaUsuarioPassword(std::string usuario, std::string contras, sql::Sta
     delete(res);
 }
 
+int getPlayerID(std::string PlayerName, sql::Statement* stmt){
+    sql::ResultSet* res = stmt->executeQuery("SELECT PlayerID FROM Players WHERE PlayerName='" + PlayerName + "'");
+    return res->getInt("PlayerID");
+    delete(res);
+}
+
 // Función grande que se encarga de todo el proceso de creación de personaje:
 void CrearPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
     std::vector<Raza> razas;    // Almacenará todas las razas disponibles (obtenidas de la BD).
@@ -106,8 +112,8 @@ void CrearPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
     }
     delete(res);    // Ya no necesitamos el resultado.
 
-    Send(s,"!Elige una raza para tu nuevo personaje:\n"); Receive(s);
-    Send(s,"!#   RAZA\t\t\tVIDA\tFUERZA\tVELOCIDAD\n");  Receive(s);
+    Send(s,"!Elige una raza para tu nuevo personaje:\n");
+    Send(s,"!#   RAZA\t\t\tVIDA\tFUERZA\tVELOCIDAD\n");
     // Imprime todas las razas almacenadas en el vector de STL:
     std::string sendStr = "";
     for(int i = 0; i < razas.size(); i++){
@@ -116,10 +122,10 @@ void CrearPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
     Send(s, "!" + sendStr);
     // Mientras no tengamos una raza válida, pide una raza al usuario:
     while(!validRace){
-        std::cout << "Introduce la raza que hayas elegido (#): ";
-        std::cin >> enteredRace;
+        Send(s,"Introduce la raza que hayas elegido (#): ");
+        enteredRace = atoi(Receive(s).c_str());
         if(enteredRace <= razas.size() && enteredRace > 0){ validRace = true; } // Si la raza está dentro del rango, entonces es válida.
-        else{ std::cout << "Raza no válida." << std::endl; }
+        else{ Send(s,"!Raza no válida.\n"); }
     }
     enteredRace -= 1;   // Como el número que introduce el usuario está en base a lo impreso por pantalla, tenemos que rectificarlo,
                         // para que coincida con el valor respectivo del vector de razas (vector->(0,n); impreso pantalla->(1,n)).
@@ -131,19 +137,19 @@ void CrearPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
     pers.oro = NumToStr(0);                                         // y su oro, que no tiene.
 
     // Le indicamos al usuario la raza que ha introducido:
-    std::cout << "Has elejido " << razas[enteredRace].nombre << ".\n";
+    Send(s,"!Has elejido " + razas[enteredRace].nombre + ".\n");
 
     // Mientras no tengamos un nombre de personaje válido, pidele uno al usuario:
     while(!validName){
-        std::cout << "Introduce el nombre del personaje: ";
-        std::cin >> enteredName;
+        Send(s,"Introduce el nombre del personaje: ");
+        enteredName = Receive(s);
         // Comprobamos si el nombre introducido existe:
         res = stmt->executeQuery("SELECT count(*) FROM Characters WHERE CharacterName='" + enteredName + "'");
         // SI hemos obtenido un resultado...
         if(res->next()){
             // ... y existe el nombre, dile al usuario que no sirve.
             if(res->getInt(1) == 1){
-                std::cout << "El nombre ya existe, por favor, prueba con otro." << std::endl;
+                Send(s,"!El nombre ya existe, por favor, prueba con otro.\n");
             }
             // ... o si no existe, es válido.
             else{ validName = true; }
@@ -151,7 +157,7 @@ void CrearPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
         delete(res);    // Ya no necesitamos el resultado.
     }
     // Le indicamos al usuario el nombre que ha escogido:
-    std::cout << "Tu personaje se llamará " << enteredName << ".\n";
+    Send(s,"!Tu personaje se llamará " + enteredName + ".\n");
     pers.nombre = enteredName;  // Almacenamos en el personaje el nombre escogido.
 
     // Cuando el usuario se logueó o se registró almacenamos su nombre de usuario. Buscamos en la DB,
@@ -166,6 +172,45 @@ void CrearPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
     + pers.nombre + "','" + pers.playerID + "','" + pers.raceID + "','" + pers.vida + "','" + pers.fuerza + "','" + pers.velocidad + "','" + pers.oro + "')");
 
     // El personaje se ha creado correctamente. Hemos finalizado el proceso de creación.
+}
+
+void CargarPersonaje(sql::Statement* stmt, sf::TcpSocket* s, int PlayerID){
+    bool loadedChar = false;
+    int enteredChar;
+    while(!loadedChar){
+        std::vector<Personaje> personajes;
+
+        sql::ResultSet* res = stmt->executeQuery("SELECT * FROM Characters WHERE PlayerID='" + NumToStr(PlayerID) + "'");
+
+        while(res->next()){
+            Personaje tmp = {res->getInt("CharacterID"), res->getString("CharacterName"), res->getString("PlayerID"), res->getString("RaceID"), res->getString("Life"),
+            res->getString("Strength"), res->getString("Speed"), res->getString("Gold")};
+            personajes.push_back(tmp);
+        }
+        delete(res);
+        std::string sendStr = "";
+        for(int i = 0; i < personajes.size(); i++){
+            sendStr += NumToStr(i+1) + " - " + personajes[i].nombre + "\n";
+        }
+        Send(s, "!Elige uno de tus personajes:\n");
+        Send(s, "!" + sendStr);
+        Send(s, "!Si introduces 0 puedes crear un personaje nuevo.\n");
+        Send(s, "Introduce el número: ");
+        enteredChar = atoi(Receive(s).c_str());
+        enteredChar -= 1;
+        if(enteredChar >= 0 && enteredChar < personajes.size()){
+            Send(s, "!Has elegido a "+ personajes[enteredChar].nombre + ".\n");
+            loadedChar = true;
+        }
+        else if(enteredChar == -1){
+            Send(s, "!Vas a crear un personaje nuevo.\n");
+            CrearPersonaje(stmt, s);
+            break;
+        }
+        else{
+            Send(s, "!Input no válido.\n");
+        }
+    }
 }
 
 // Función que se encarga del Login: ( devuelve true si el usuario necesita registrarse! )
@@ -222,7 +267,7 @@ void REGISTER(sql::Statement* stmt, sf::TcpSocket* s){
         Send(s,"Vas a registrarte. Por favor, introduce la siguiente información:\nNombre de usuario: ");
         user = Receive(s);   // El usuario introduce su nombre de usuario
         nameIsTaken = compruebaUsuario(user, stmt);
-        if(nameIsTaken){ Send(s, "!El nombre de usuario " + user + " ya existe. Prueba otro:\n"); Receive(s); }
+        if(nameIsTaken){ Send(s, "!El nombre de usuario " + user + " ya existe. Prueba otro:\n"); }
     }
     while(!passwdMatches){
         Send(s, "Contraseña: ");
@@ -230,15 +275,15 @@ void REGISTER(sql::Statement* stmt, sf::TcpSocket* s){
         Send(s, "Repite la contraseña: ");
         checkPasswd = Receive(s);
         if(checkPasswd == passwd){ passwdMatches = true;}   // Si son iguales, significa que coinciden.
-        else { Send(s, "!Las contraseñas no coinciden. Vuelve a intentar:\n"); Receive(s);}  // ATENCIÓN, ROMPEMOS CICLO?
+        else { Send(s, "!Las contraseñas no coinciden. Vuelve a intentar:\n"); }  // ATENCIÓN, ROMPEMOS CICLO?
     }
     // El usuario ha usado un nombre de usuario y contraseña válidos. Lo insertamos en la base de datos.
     int inserted = stmt->executeUpdate("INSERT into Players(PlayerName,PlayerPassword) values ('" + user + "', '" + passwd + "')");
-    if(inserted == 1){ Send(s, "!Te has registrado, " + user + ".\n"); Receive(s); }
+    if(inserted == 1){ Send(s, "!Te has registrado, " + user + ".\n"); }
 
     usuario = user; // Almacenamos su nombre de usuario.
 
-   // CrearPersonaje(stmt);   // Iniciamos el proceso de creación de personaje.
+    CrearPersonaje(stmt, s);   // Iniciamos el proceso de creación de personaje.
 }
 
 std::vector<Room*> LoadRoomsMap(){
@@ -291,6 +336,7 @@ void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
     Room* currentRoom = shd->rooms[0];
 
     if(LOGIN(stmt, socket)){ REGISTER(stmt, socket); }
+    else{ CargarPersonaje(stmt, socket, getPlayerID(usuario, stmt)); }
     debug("Game Start!");
     while(!playerExit)
     {
