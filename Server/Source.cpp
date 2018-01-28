@@ -28,7 +28,7 @@
 #define PASSWORD "eucaliptus"
 #define DATABASE "MUDGAMEDB"
 
-#define MAX_BUFF_SIZE 100
+#define MAX_BUFF_SIZE 800
 
 #define DEBUG true
 
@@ -51,7 +51,7 @@ std::string usuario;    // Almacena el nombre de usuario, una vez se ha logueado
 
 // Estructuras de datos que almacenan información de manera similar a la base de datos respectiva:
 struct Raza { int id; std::string nombre; int vida_base; int fuerza_base; int velocidad_base; };
-struct Personaje { int id; std::string nombre, playerID, raceID, vida, fuerza,  velocidad, oro; };
+struct Personaje { int id; std::string nombre; int playerID; std::string race; int vida, fuerza,  velocidad, oro; };
 
 struct SharedData
 {
@@ -90,12 +90,6 @@ bool compruebaUsuarioPassword(std::string usuario, std::string contras, sql::Sta
     delete(res);
 }
 
-int getPlayerID(std::string PlayerName, sql::Statement* stmt){
-    sql::ResultSet* res = stmt->executeQuery("SELECT PlayerID FROM Players WHERE PlayerName='" + PlayerName + "'");
-    return res->getInt("PlayerID");
-    delete(res);
-}
-
 // Función grande que se encarga de todo el proceso de creación de personaje:
 void CrearPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
     std::vector<Raza> razas;    // Almacenará todas las razas disponibles (obtenidas de la BD).
@@ -130,11 +124,11 @@ void CrearPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
     enteredRace -= 1;   // Como el número que introduce el usuario está en base a lo impreso por pantalla, tenemos que rectificarlo,
                         // para que coincida con el valor respectivo del vector de razas (vector->(0,n); impreso pantalla->(1,n)).
     // Rellenamos el nuevo personaje con la información que tenemos:
-    pers.raceID = NumToStr(razas[enteredRace].id);                  // la raza del personaje.
-    pers.vida = NumToStr(razas[enteredRace].vida_base);             // la vida inicial.
-    pers.fuerza = NumToStr(razas[enteredRace].fuerza_base);         // su fuerza inicial.
-    pers.velocidad = NumToStr(razas[enteredRace].velocidad_base);   // su velocidad inicial.
-    pers.oro = NumToStr(0);                                         // y su oro, que no tiene.
+    pers.race = NumToStr(razas[enteredRace].id);                  // la raza del personaje.
+    pers.vida = razas[enteredRace].vida_base;             // la vida inicial.
+    pers.fuerza = razas[enteredRace].fuerza_base;         // su fuerza inicial.
+    pers.velocidad = razas[enteredRace].velocidad_base;   // su velocidad inicial.
+    pers.oro = 0;                                         // y su oro, que no tiene.
 
     // Le indicamos al usuario la raza que ha introducido:
     Send(s,"!Has elejido " + razas[enteredRace].nombre + ".\n");
@@ -164,33 +158,51 @@ void CrearPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
     // su PlayerID correspondiente.
     res = stmt->executeQuery("SELECT PlayerID FROM Players WHERE PlayerName='" + usuario + "'");
     res->next();
-    pers.playerID = NumToStr(res->getInt("PlayerID"));  //Ahora que tenemos el PlayerID, lo almacenamos en el personaje.
+    pers.playerID = res->getInt("PlayerID");  //Ahora que tenemos el PlayerID, lo almacenamos en el personaje.
     delete(res);    // Ya no necesitamos el resultado.
 
     // Esta lorza de código introduce cada una de las entradas del struct Personaje en una nueva entrada en la DB (en la tabla Characters):
     int e = stmt->executeUpdate("INSERT INTO Characters(CharacterName, PlayerID, RaceID, Life, Strength, Speed, Gold) values('"
-    + pers.nombre + "','" + pers.playerID + "','" + pers.raceID + "','" + pers.vida + "','" + pers.fuerza + "','" + pers.velocidad + "','" + pers.oro + "')");
+    + pers.nombre + "','" + NumToStr(pers.playerID) + "','" + pers.race + "','" + NumToStr(pers.vida) + "','" + NumToStr(pers.fuerza)
+    + "','" + NumToStr(pers.velocidad) + "','" + NumToStr(pers.oro) + "')");
 
     // El personaje se ha creado correctamente. Hemos finalizado el proceso de creación.
 }
 
-void CargarPersonaje(sql::Statement* stmt, sf::TcpSocket* s, int PlayerID){
+void CargarPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
     bool loadedChar = false;
     int enteredChar;
     while(!loadedChar){
         std::vector<Personaje> personajes;
+        sql::ResultSet* res = stmt->executeQuery("SELECT PlayerID FROM Players WHERE PlayerName='" + usuario + "'");
+        int playerID = res->getInt("PlayerID");
+        delete(res);
 
-        sql::ResultSet* res = stmt->executeQuery("SELECT * FROM Characters WHERE PlayerID='" + NumToStr(PlayerID) + "'");
+        res = stmt->executeQuery("SELECT * FROM Characters WHERE PlayerID='" + NumToStr(playerID) + "'");
 
         while(res->next()){
-            Personaje tmp = {res->getInt("CharacterID"), res->getString("CharacterName"), res->getString("PlayerID"), res->getString("RaceID"), res->getString("Life"),
-            res->getString("Strength"), res->getString("Speed"), res->getString("Gold")};
+            Personaje tmp;
+            tmp.id = res->getInt("CharacterID");
+            tmp.nombre = res->getString("CharacterName");
+            tmp.playerID = playerID;
+            tmp.race = res->getString("RaceID");
+            tmp.vida = res->getInt("Life");
+            tmp.fuerza = res->getInt("Strength");
+            tmp.velocidad = res->getInt("Speed");
+            tmp.oro = res->getInt("Gold");
             personajes.push_back(tmp);
         }
         delete(res);
+
+        for(int i = 0; i < personajes.size(); i++){
+            res = stmt->executeQuery("SELECT RaceName FROM Races WHERE RaceID='" + personajes[i].race + "'");
+            personajes[i].race = res->getString("RaceName");
+        }
+        delete(res);
+
         std::string sendStr = "";
         for(int i = 0; i < personajes.size(); i++){
-            sendStr += NumToStr(i+1) + " - " + personajes[i].nombre + "\n";
+            sendStr += NumToStr(i+1) + " - " + personajes[i].nombre + "\n"; // Falta raza, velocidad...
         }
         Send(s, "!Elige uno de tus personajes:\n");
         Send(s, "!" + sendStr);
@@ -336,7 +348,7 @@ void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
     Room* currentRoom = shd->rooms[0];
 
     if(LOGIN(stmt, socket)){ REGISTER(stmt, socket); }
-    else{ CargarPersonaje(stmt, socket, getPlayerID(usuario, stmt)); }
+    else{ CargarPersonaje(stmt, socket); }
     debug("Game Start!");
     while(!playerExit)
     {
