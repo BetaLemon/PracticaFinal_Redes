@@ -172,13 +172,16 @@ void CrearPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
 void CargarPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
     bool loadedChar = false;
     int enteredChar;
+    debug("Voy a cargar los personajes del jugador " + usuario + ".");
     while(!loadedChar){
         std::vector<Personaje> personajes;
         sql::ResultSet* res = stmt->executeQuery("SELECT PlayerID FROM Players WHERE PlayerName='" + usuario + "'");
         int playerID = res->getInt("PlayerID");
+        debug(playerID + " es el id del jugador.");
         delete(res);
 
         res = stmt->executeQuery("SELECT * FROM Characters WHERE PlayerID='" + NumToStr(playerID) + "'");
+        debug("He extraído los personajes del jugador, desde la BD.");
 
         while(res->next()){
             Personaje tmp;
@@ -193,17 +196,21 @@ void CargarPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
             personajes.push_back(tmp);
         }
         delete(res);
+        debug("He creado el vector de personajes.");
 
         for(int i = 0; i < personajes.size(); i++){
             res = stmt->executeQuery("SELECT RaceName FROM Races WHERE RaceID='" + personajes[i].race + "'");
             personajes[i].race = res->getString("RaceName");
         }
         delete(res);
+        debug("He cambiado los ids de raza por sus nombres.");
 
         std::string sendStr = "";
         for(int i = 0; i < personajes.size(); i++){
             sendStr += NumToStr(i+1) + " - " + personajes[i].nombre + "\n"; // Falta raza, velocidad...
         }
+        debug("He creado el string con la lista de personajes.");
+
         Send(s, "!Elige uno de tus personajes:\n");
         Send(s, "!" + sendStr);
         Send(s, "!Si introduces 0 puedes crear un personaje nuevo.\n");
