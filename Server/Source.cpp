@@ -44,11 +44,13 @@ template <typename T>
      return ss.str();
   }
 
+//Mediante una constante (DEBUG) podemos retirar de consola todos los debugs que hayamos escrito en el codigo.
 template <typename T>
 void debug(T txt){
     if(DEBUG){ std:: cout << txt << std::endl; }
 }
 
+//Estructura que usaremos para la memoria compartida.
 struct SharedData
 {
     std::vector<Room*> rooms;
@@ -67,26 +69,28 @@ struct Raza { int id; std::string nombre; int vida_base; int fuerza_base; int ve
 struct Personaje { int id; std::string nombre; int playerID; std::string race; int vida, fuerza,  velocidad, oro; };
 
 
-
+//Utilizamos esta función para recibir mensajes y retornamos el mensaje recibido.
 std::string Receive(sf::TcpSocket* s){
     char buffer[MAX_BUFF_SIZE];
     size_t receivedBytes;
     if(s->receive(buffer, MAX_BUFF_SIZE, receivedBytes) != sf::Socket::Done){ std::cout << "Error receiving data." << std::endl; }
-    buffer[receivedBytes] = '\0';
+    buffer[receivedBytes] = '\0';   //Siendo conscientes del uso de arrays estaticos de tamaño MAX_BUFF_SIZE, marcamos el final del mensaje con el código de escape '\0'.
     std::string tmp = buffer;
-    if(tmp == "EXIT" || tmp == "exit" || tmp == "quit" || tmp == "QUIT")
+    if(tmp == "EXIT" || tmp == "exit" || tmp == "quit" || tmp == "QUIT")    //Comprobamos si el cliente envia al servidor estos mensajes en cualquier momento.
     {
-        playerExit = true;
+        playerExit = true;  //Esto hará que el hilo hijo del servidor actual, salga de su bucle de ejecución principal y finalice el proceso.
     }
 
     debug(tmp + " was received.");
     return tmp;
 }
 
+//Función que usamos para enviar mensajes.
 void Send(sf::TcpSocket* s, std::string msg){
     s->send(msg.c_str(), msg.length());
     debug(msg);
-    if(msg.at(0) == '!'){ Receive(s); }
+    if(msg.at(0) == '!'){ Receive(s); } //Utilizamos el caracter '!' al principio de los mensajes para indicar que se trata de un mensaje informativo,
+                                        //de modo que el cliente deberá hacer caso omiso de este y seguir recibiendo en lugar de pasar a enviar.
 }
 
 // Una funcion con la que hemos encapsulado la comprobación de la existencia del nombre de usuario:
@@ -195,7 +199,7 @@ void CargarPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
 
 
         debug("Got result from query");
-        //debug("SHIT: "+res->);
+
         int playerID = res->getInt("PlayerID");
         debug(playerID + " es el id del jugador.");
         delete(res);
@@ -327,30 +331,39 @@ void REGISTER(sql::Statement* stmt, sf::TcpSocket* s){
 }
 
 std::vector<Room*> LoadRoomsMap(){
-    pugi::xml_parse_result result = doc.load_file("worldmap.xml");
-    pugi::xml_node roomsNode = doc.child("rooms");
+    pugi::xml_parse_result result = doc.load_file("worldmap.xml");  //Cargamos el fichero.xml como documento de la libreria.
+    pugi::xml_node roomsNode = doc.child("rooms");  //Accedemos al nodo raiz del XML
     std::vector<Room*> rooms;
+
+    //Por cada nodo "room" que encontremos, añadimos un nuevo objeto de la clase Room al vector "rooms".
     for(pugi::xml_node roomNode = roomsNode.child("room"); roomNode; roomNode = roomNode.next_sibling("room")){
         std::cout << "Se han detectado las rooms" << std::endl;
         rooms.push_back(new Room());
 
     }
+
+    //Una vez creados todos los rooms, los rellenamos volviendo a recorrer cada nodo.
     for(pugi::xml_node roomNode = roomsNode.child("room"); roomNode; roomNode = roomNode.next_sibling("room")){
         std::cout << roomNode.attribute("ID").as_int() << std::endl;
-        Room* tmp = rooms[roomNode.attribute("ID").as_int()];
-        //debug(roomNode.attribute("ID").as_int());
+        Room* tmp = rooms[roomNode.attribute("ID").as_int()];   //Accedemos al room del vector correspondiente al nodo actual del XML.
+
+        //Parseamos todos los valores de los nodos para asignarlos a los punteros de cada Room.
         std::string msg = roomNode.child_value("MSG");
         int n = atoi(roomNode.child_value("N"));
         int s = atoi(roomNode.child_value("S"));
         int e = atoi(roomNode.child_value("E"));
         int w = atoi(roomNode.child_value("W"));
 
+        //Tratamos '-1' como indicador de que una dirección no es válida, en cuyo caso, asignamos el puntero en cuestion a nullptr.
+        //En caso contrario, hacemos que cada puntero apunte a la room correspondiente dentro del mismo vector.
         tmp->SetMSG(msg);
         n == -1 ? tmp->SetN(nullptr) : tmp->SetN(rooms[n]);
         s == -1 ? tmp->SetS(nullptr) : tmp->SetS(rooms[s]);
         e == -1 ? tmp->SetE(nullptr) : tmp->SetE(rooms[e]);
         w == -1 ? tmp->SetW(nullptr) : tmp->SetW(rooms[w]);
-        //for(pugi::xml_node RoomNodeDir = RoomNodeDir.first_child(); RoomNodeDir; RoomNodeDir.next_sibling()){
+
+        //Comprovamos que todo se haya asignado correctamente.
+        //Un '0' nos confirmará que se trata de un nullptr. Un formato '0x00000' nos confirmará que se trata de una dirección de memoria válida.
         std::cout << "MSG: ";
         debug(tmp->GetMessage());
         std::cout << "N: ";
@@ -375,10 +388,11 @@ void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
 
     playerExit = false;
 
-    SharedData* shd = (struct SharedData*)shmat(shmID, NULL, 0);
+    SharedData* shd = (struct SharedData*)shmat(shmID, NULL, 0);    //Inicializamos el espacio en memoria compartida.
     shm = shd;
     if(shd < 0) std::cout << "[ERROR ATTACHING SHARED MEMORY]"<<std::endl;
-    Room* currentRoom = shd->rooms[0];
+
+    Room* currentRoom = shd->rooms[0];  //Hacemos que el juego comience por el primer nodo (room), así que asignamos currentRoom al primer Room* dentro del vector en memoria compartida.
 
     if(LOGIN(stmt, socket)){ REGISTER(stmt, socket); }
     //else{ CargarPersonaje(stmt, socket); }
@@ -386,51 +400,47 @@ void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
     while(!playerExit)
     {
 
-        Send(socket, currentRoom->GetMessage());
-        std::string tmp = Receive(socket);
+        Send(socket, currentRoom->GetMessage());    //Enviamos mensaje de la room actual.
+        std::string tmp = Receive(socket);  //Esperamos la respuesta del jugador.
 
         Room* prevRoom = currentRoom;
 
         if(tmp == "N" || tmp == "n")
         {
-            currentRoom = currentRoom->GetN();
+            currentRoom = currentRoom->GetN();  //Cambiamos la referencia del nodo actual, al nodo al que apunta GetN();
         }
         else if(tmp == "S" || tmp == "s")
         {
-            currentRoom = currentRoom->GetS();
+            currentRoom = currentRoom->GetS();  //Cambiamos la referencia del nodo actual, al nodo al que apunta GetS();
         }
         else if(tmp == "E" || tmp == "e")
         {
-            currentRoom = currentRoom->GetE();
+            currentRoom = currentRoom->GetE();  //Cambiamos la referencia del nodo actual, al nodo al que apunta GetE();
         }
         else if(tmp == "W" || tmp == "w")
         {
-            currentRoom = currentRoom->GetW();
+            currentRoom = currentRoom->GetW();  //Cambiamos la referencia del nodo actual, al nodo al que apunta GetW();
         }
         else
         {
-            Send(socket, "!You can only go N, S, E or W!\n");
+            Send(socket, "!You can only go N, S, E or W!\n");   //En cualquier otro caso, no cambiaremos de nodo, de manera que la proxima iteración enviará el mismo mensaje.
         }
 
         if(currentRoom == nullptr)
         {
-            Send(socket, "!You can't go that way!\n");
-            currentRoom = prevRoom;
+            Send(socket, "!You can't go that way!\n");  //En caso de que un nodo sea nullptr, significará que no es posible avanzar en esa dirección.
+            currentRoom = prevRoom; //Recuperaremos el nodo anterior.
         }
 
 
 
     }
 
-    //shd->sockets
-
-    kill(shd->serverPID, SIGUSR1);
-    shmdt(shd);
-    socket->disconnect();
-    //socket->close();
-    //while(!playerExit && socket->)
+    kill(shd->serverPID, SIGUSR1);  //Enviamos un kill al padre para que gestione el correcto cierre de los procesos hijos.
+    shmdt(shd); //Detachamos la memoria compartida.
+    socket->disconnect();   //Desconectamos el socket del cliente gestionado por este proceso.
 }
-// LISTA DE DUDAS PARA JUEVES: wait(),
+
 void WaitHandler(int param)
 {
     wait();
@@ -442,14 +452,20 @@ int main(){
         signal(SIGUSR1, WaitHandler);
 
 
-        //Shared Memory Reserved
+        //Reservamos espacio en memoria compartida.
         int shmID = shmget(IPC_PRIVATE, sizeof(SharedData), IPC_CREAT | 0666);
         if(shmID < 0) std::cout << "[FAILED RESERVING SHARED MEMORY]"<< std::endl;
+
+        //Asignamos el puntero 'shd' como puntero a la memoria compartida reservada.
         SharedData* shd = (struct SharedData*)shmat(shmID, NULL, 0);
         if(shd < 0) std::cout << "[ERROR ATTACHING SHARED MEMORY]"<< std::endl;
+
+        //Cargamos las rooms en memoria compartida desde XML.
         shd->rooms = LoadRoomsMap();
 
         shd->serverPID = getpid();
+
+
         // Inicialización para MySQL:
         sql::Driver* driver = get_driver_instance();
         sql::Connection* con = driver->connect(HOST, USER, PASSWORD);
@@ -458,14 +474,10 @@ int main(){
         sql::Statement* stmt = con->createStatement();
 
 
-        //RoomManager::Instance()->
         // Lógica del servidor:
         std::cout << "Listening..." << std::endl;
         sf::TcpListener listener;
         listener.listen(50000);
-
-        //SharedData shd;
-        //std::vector<sf::TcpSocket*> sockets;
 
         while(gameRunning){
 
@@ -475,7 +487,7 @@ int main(){
             std::cout << "New Socket Accepted from: "<< socket.getRemoteAddress() <<":"<<socket.getRemotePort()<<std::endl;
             shd->sockets.push_back(&socket);
             if(fork() == 0){
-                GestionarCliente(shmID, stmt, &socket);
+                GestionarCliente(shmID, stmt, &socket); //Cada proceso hijo gestiona un cliente diferente.
                 exit(0);
             }
 
@@ -489,16 +501,9 @@ int main(){
         for(int i = 0; i < shd->sockets.size(); i++)
         {
             shd->sockets[i]->disconnect();
-            //shd->sockets[i]->close();
         }
 
         listener.close();
-        //if(LOGIN(stmt)){ REGISTER(stmt); }  // Si el usuario ha elegido registrarse, LOGIN devuelve true, para ejecutar REGISTER().
-
-        //std::cout << "Empieza el juego" << std::endl;
-
-        //CargarXML();
-        //recorrerNodosJugadores();
 
         delete(stmt);
         delete(con);
