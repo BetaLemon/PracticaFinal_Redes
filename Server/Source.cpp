@@ -46,6 +46,11 @@ void debug(T txt){
     if(DEBUG){ std:: cout << txt << std::endl; }
 }
 
+struct SharedData
+{
+    std::vector<Room*> rooms;
+};
+
 pugi::xml_document doc; // Almacena la informacion relacionada al documento XML.
 std::string usuario;    // Almacena el nombre de usuario, una vez se ha logueado.
 
@@ -53,10 +58,7 @@ std::string usuario;    // Almacena el nombre de usuario, una vez se ha logueado
 struct Raza { int id; std::string nombre; int vida_base; int fuerza_base; int velocidad_base; };
 struct Personaje { int id; std::string nombre; int playerID; std::string race; int vida, fuerza,  velocidad, oro; };
 
-struct SharedData
-{
-    std::vector<Room*> rooms;
-};
+
 
 std::string Receive(sf::TcpSocket* s){
     char buffer[MAX_BUFF_SIZE];
@@ -174,8 +176,12 @@ void CargarPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
     int enteredChar;
     debug("Voy a cargar los personajes del jugador " + usuario + ".");
     while(!loadedChar){
+        debug("While: Loop Start");
         std::vector<Personaje> personajes;
         sql::ResultSet* res = stmt->executeQuery("SELECT PlayerID FROM Players WHERE PlayerName='" + usuario + "'");
+
+        debug("Got result from query");
+        //debug("SHIT: "+res->);
         int playerID = res->getInt("PlayerID");
         debug(playerID + " es el id del jugador.");
         delete(res);
@@ -355,7 +361,7 @@ void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
     Room* currentRoom = shd->rooms[0];
 
     if(LOGIN(stmt, socket)){ REGISTER(stmt, socket); }
-    else{ CargarPersonaje(stmt, socket); }
+    //else{ CargarPersonaje(stmt, socket); }
     debug("Game Start!");
     while(!playerExit)
     {
