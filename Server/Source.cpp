@@ -2,6 +2,7 @@
     #define PUGIXML HEADER ONLY
 #endif  // DEBUG
 
+#include <signal.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/ipc.h>
@@ -49,10 +50,13 @@ void debug(T txt){
 struct SharedData
 {
     std::vector<Room*> rooms;
+    std::vector<sf::TcpSocket*> sockets;
 };
 
 pugi::xml_document doc; // Almacena la informacion relacionada al documento XML.
 std::string usuario;    // Almacena el nombre de usuario, una vez se ha logueado.
+bool gameRunning;
+SharedData* shm;
 
 // Estructuras de datos que almacenan información de manera similar a la base de datos respectiva:
 struct Raza { int id; std::string nombre; int vida_base; int fuerza_base; int velocidad_base; };
@@ -180,6 +184,7 @@ void CargarPersonaje(sql::Statement* stmt, sf::TcpSocket* s){
         std::vector<Personaje> personajes;
         sql::ResultSet* res = stmt->executeQuery("SELECT PlayerID FROM Players WHERE PlayerName='" + usuario + "'");
 
+
         debug("Got result from query");
         //debug("SHIT: "+res->);
         int playerID = res->getInt("PlayerID");
@@ -274,6 +279,7 @@ bool LOGIN(sql::Statement* stmt, sf::TcpSocket* s){
             }
             else if(input == 'n' || input == 'N'){
                 needsRegister = false;  // No necesita registrarse, porque no quiere.
+                s->disconnect();
                 break;
             }
             else{ Send(s,"!Respuesta no válida.\n");}   // El receive sólo es para cumplir con el ciclo.
@@ -354,9 +360,13 @@ std::vector<Room*> LoadRoomsMap(){
     return rooms;
 }
 
+
 void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
+
     bool playerExit = false;
+
     SharedData* shd = (struct SharedData*)shmat(shmID, NULL, 0);
+    shm = shd;
     if(shd < 0) std::cout << "[ERROR ATTACHING SHARED MEMORY]"<<std::endl;
     Room* currentRoom = shd->rooms[0];
 
@@ -365,43 +375,37 @@ void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
     debug("Game Start!");
     while(!playerExit)
     {
-        //LOGIN(stmt, socket);
 
-        while(true)
+        Send(socket, currentRoom->GetMessage());
+        std::string tmp = Receive(socket);
+
+        Room* prevRoom = currentRoom;
+
+        if(tmp == "N" || tmp == "n")
         {
+            currentRoom = currentRoom->GetN();
+        }
+        else if(tmp == "S" || tmp == "s")
+        {
+            currentRoom = currentRoom->GetS();
+        }
+        else if(tmp == "E" || tmp == "e")
+        {
+            currentRoom = currentRoom->GetE();
+        }
+        else if(tmp == "W" || tmp == "w")
+        {
+            currentRoom = currentRoom->GetW();
+        }
+        else
+        {
+            Send(socket, "!You can only go N, S, E or W!\n");
+        }
 
-            Send(socket, currentRoom->GetMessage());
-            std::string tmp = Receive(socket);
-
-            Room* prevRoom = currentRoom;
-
-            if(tmp == "N" || tmp == "n")
-            {
-                currentRoom = currentRoom->GetN();
-            }
-            else if(tmp == "S" || tmp == "s")
-            {
-                currentRoom = currentRoom->GetS();
-            }
-            else if(tmp == "E" || tmp == "e")
-            {
-                currentRoom = currentRoom->GetE();
-            }
-            else if(tmp == "W" || tmp == "w")
-            {
-                currentRoom = currentRoom->GetW();
-            }
-            else
-            {
-                Send(socket, "!You can only go N, S, E or W!\n");
-            }
-
-            if(currentRoom == nullptr)
-            {
-                Send(socket, "!You shall not pass!\n");
-                currentRoom = prevRoom;
-            }
-
+        if(currentRoom == nullptr)
+        {
+            Send(socket, "!You can't go that way!\n");
+            currentRoom = prevRoom;
         }
 
 
@@ -410,14 +414,14 @@ void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
 
     shmdt(shd);
     socket->disconnect();
+    //socket->close();
     //while(!playerExit && socket->)
 }
-
-
 // LISTA DE DUDAS PARA JUEVES: wait(),
 
 int main(){
     try{
+        gameRunning = true;
         //Shared Memory Reserved
         int shmID = shmget(IPC_PRIVATE, sizeof(SharedData), IPC_CREAT | 0666);
         if(shmID < 0) std::cout << "[FAILED RESERVING SHARED MEMORY]"<< std::endl;
@@ -431,32 +435,36 @@ int main(){
 
         sql::Statement* stmt = con->createStatement();
 
+
         //RoomManager::Instance()->
         // Lógica del servidor:
         std::cout << "Listening..." << std::endl;
         sf::TcpListener listener;
         listener.listen(50000);
-        bool gameRunning = true;
 
         //SharedData shd;
-        std::vector<sf::TcpSocket*> sockets;
+        //std::vector<sf::TcpSocket*> sockets;
 
         while(gameRunning){
+
             sf::TcpSocket socket;
             std::cout << "Waiting for new connection..." << std::endl;
-            listener.accept(socket);
+            sf::Socket::Status status = listener.accept(socket);
             std::cout << "New Socket Accepted from: "<< socket.getRemoteAddress() <<":"<<socket.getRemotePort()<<std::endl;
-            sockets.push_back(&socket);
+            shd->sockets.push_back(&socket);
             if(fork() == 0){
                 GestionarCliente(shmID, stmt, &socket);
                 exit(0);
             }
+
         }
 
-        for(int i = 0; i < sockets.size(); i++)
+        for(int i = 0; i < shd->sockets.size(); i++)
         {
-            sockets[i]->disconnect();
+            shd->sockets[i]->disconnect();
+            //shd->sockets[i]->close();
         }
+
         listener.close();
         //if(LOGIN(stmt)){ REGISTER(stmt); }  // Si el usuario ha elegido registrarse, LOGIN devuelve true, para ejecutar REGISTER().
 
