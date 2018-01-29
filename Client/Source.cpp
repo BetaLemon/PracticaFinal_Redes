@@ -79,7 +79,13 @@ int main(){
         else{
             std::cout << rec;
             std::cin >> in;
-            Send(&sock, in);
+
+
+            if(in == "exit" || in == "EXIT" || in == "quit" || in == "QUIT")
+            {
+                break;
+            }
+            else Send(&sock, in);
         }
 
 /*
@@ -95,6 +101,8 @@ int main(){
         }*/
 
     }
+
+    sock.disconnect();
 
 /*
     char buffer[MAX_BUFF_SIZE];
