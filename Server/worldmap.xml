@@ -1,9 +1,18 @@
 <rooms>
     <room ID = "0">
-        <MSG>Despiertas en una plaza en ruinas con el sonido del mar de lejos y un cielo nocturno ligeramente iluminado por una luna llena tapada por las nubes.
-        La plaza, rodeada de arcos destrozados invadidos por enredaderas, da a entender que hace demasiado tiempo que nadie cuida de este lugar.
-        Al Norte(N) ves hierba alta, y un camino ligeramente iluminado que atraviesa lo que parecen ser unas rocas.
-        Al Sur(S) ves como la plaza, medio resquebrajada y malformada, da paso a un barranco, cuyo fondo eres incapaz de percibir.
+        <MSG>
+        Despiertas en una plaza en ruinas con el sonido del mar de lejos
+        y un cielo nocturno ligeramente iluminado por una luna llena tapada por las nubes.
+
+        La plaza, rodeada de arcos destrozados invadidos por enredaderas,
+        da a entender que hace demasiado tiempo que nadie cuida de este lugar.
+
+        Al Norte(N) ves hierba alta, y un camino ligeramente iluminado
+        que atraviesa lo que parecen ser unas rocas.
+
+        Al Sur(S) ves como la plaza, medio resquebrajada y malformada,
+        da paso a un barranco, cuyo fondo eres incapaz de percibir.
+
         ¿Hacia dónde quieres ir? [Norte(N)]
         </MSG>
         <N>1</N>
@@ -12,8 +21,15 @@
         <W>-1</W>
     </room>
     <room ID = "1">
-        <MSG>Avanzas entre la hierba alta costosamente. Oyes extraños gruñidos al Oeste(W), pero no parecen acercarse.
-        Vislumbras al Norte(N) la tenue luz de unas antorchas, que parecen trazar un sendero hacia una zona más alta que en la que te encuentras.
+        <MSG>
+        Avanzas entre la hierba alta costosamente.
+
+        Oyes extraños gruñidos al Oeste(W), pero no parecen acercarse.
+
+        Vislumbras al Norte(N) la tenue luz de unas antorchas,
+        que parecen trazar un sendero hacia una zona más alta que
+        en la que te encuentras.
+
         ¿Hacia dónde quieres ir? [Norte(N)] [Sur(S)] [Oeste(W)]
         </MSG>
         <N>3</N>
@@ -22,11 +38,22 @@
         <W>2</W>
     </room>
     <room ID = "2">
-        <MSG>Ves 3 seres, que parecen ser perros raquíticos, peleándose por algún tipo de objeto brillante.
-        No se han percatado de tu presencia, pero tienes la sensación de que cualquier movimiento en falso podría captar su atención.
-        Los perros se encuentran al Norte(N) de tu posición y más allá, un muro de rocas y lo que parece ser una pequeña cueva, relativamente cerca del sendero que podias ver desde la plaza.
-        Al Oeste(W) parece que hay un camino estrecho que bordea el barranco.
+        <MSG>
+        Ves 3 seres, que parecen ser perros raquíticos,
+        peleándose por algún tipo de objeto brillante.
+
+        No se han percatado de tu presencia, pero tienes la
+        sensación de que cualquier movimiento en falso podría
+        captar su atención.
+
+        Los perros se encuentran al Norte(N) de tu posición y más allá,
+        un muro de rocas y lo que parece ser una pequeña cueva,
+        relativamente cerca del sendero que podias ver desde la plaza.
+
+        Al Oeste(W) parece que hay un camino estrecho que
+        bordea el barranco.
         Al Este(E) ves hierba alta.
+
         ¿Hacia dónde quieres ir? [Norte(N)] [Este(E)] [Oeste(W)]
         </MSG>
         <N>6</N>
@@ -35,8 +62,15 @@
         <W>4</W>
     </room>
     <room ID = "3">
-        <MSG>Ves un puente que cruzar un riachuelo hacia el Norte(N), más allá, ves una pequeña casita de madera que por la tenue luz que emana, parece habitada.
-        Al Oeste(W) ves una pendiente que sube por un camino hacia lo alto del muro de rocas que rodea la casa y de dónde nace el riachuelo.
+        <MSG>
+        Ves un puente que cruzar un riachuelo hacia el Norte(N),
+        más allá, ves una pequeña casita de madera que por la tenue luz
+        que emana, parece habitada.
+
+        Al Oeste(W) ves una pendiente que sube por un camino hacia lo
+        alto del muro de rocas que rodea la casa y de dónde
+        nace el riachuelo.
+
         ¿Hacia dónde quieres ir? [Norte(N)] [Sur(S)] [Oeste(W)]
         </MSG>
         <N>7</N>
@@ -45,8 +79,13 @@
         <W>11</W>
     </room>
     <room ID = "4">
-        <MSG>Desde aquí, y tras desplazarte hacia el norte hasta tocar el muro de rocas, te resulta más fácil ver la cueva al Este(E), y ves posible rodear a los perros para evitar llamar su atención.
+        <MSG>
+        Desde aquí, y tras desplazarte hacia el norte hasta tocar
+        el muro de rocas, te resulta más fácil ver la cueva al Este(E),
+        y ves posible rodear a los perros para evitar llamar su atención.
+
         Hacia el Sur(S), ves la plaza dónde has despertado.
+
         ¿Hacia dónde quieres ir? [Este(E)] [Sur(S)]
         </MSG>
         <N>-1</N>
@@ -55,10 +94,18 @@
         <W>-1</W>
     </room>
     <room ID = "5">
-        <MSG>Estás en un prado de hierba alta.
-        Al Sur(S) ves como unos perros raquíticos se pelean por un objeto brillante.
+        <MSG>
+        Estás en un prado de hierba alta.
+
+        Al Sur(S) ves como unos perros raquíticos se pelean
+        por un objeto brillante.
+
         Al Oeste(W) ves un camino que rodea por el borde del acantilado.
-        Al Norte(N) ves cómo la luz de la luna entra por el otro extremo a través de una cortina de plantas que tapan un poco la salida.
+
+        Al Norte(N) ves cómo la luz de la luna entra por el otro
+        extremo a través de una cortina de plantas que tapan
+        un poco la salida.
+
         ¿Hacia dónde quieres ir? [Norte(N)] [Sur(S)] [Oeste(W)]
         </MSG>
         <N>11</N>
@@ -67,7 +114,9 @@
         <W>4</W>
     </room>
     <room ID = "6">
-        <MSG>Los perros te ven y se abalanzan sobre tu cuello para destrozarte.
+        <MSG>
+        Los perros te ven y se abalanzan sobre tu cuello
+        para destrozarte.
         [ESTÁS MUERTO]
         </MSG>
         <N>-1</N>
@@ -76,9 +125,16 @@
         <W>-1</W>
     </room>
     <room ID = "7">
-        <MSG>Al Norte(N), ves la puerta de la casita, que parece entreabierta.
-        Al lado de la casa, hacia el Este(E), ves un sendero que lleva a la parte de atrás de la casa, dónde parece que da comienzo un denso bosque.
-        Hacia el Sur(S), ves el puente que cruza el riachuelo en dirección a la plaza dónde has despertado.
+        <MSG>
+        Al Norte(N), ves la puerta de la casita, que parece entreabierta.
+
+        Al lado de la casa, hacia el Este(E), ves un sendero que lleva
+        a la parte de atrás de la casa, dónde parece que
+        da comienzo un denso bosque.
+
+        Hacia el Sur(S), ves el puente que cruza el riachuelo en dirección
+        a la plaza dónde has despertado.
+
         ¿Hacia dónde quieres ir? [Este(N)] [Sur(S)] [Este(E)]
         </MSG>
         <N>8</N>
@@ -87,9 +143,17 @@
         <W>-1</W>
     </room>
     <room ID = "8">
-        <MSG>Parece una estancia bastante acogedora, pero hay algo que te resulta extrañamente perturbador.
-        Una anciana en una mecedora con los ojos vendados permanece ahí, frente a una mesa, al Oeste(W), cómo si no se hubiese percatado de que has entrado en la casa.
-        Tanto al Norte(N) cómo al Sur(S) ves puertas que te permiten salir de al casa.
+        <MSG>
+        Parece una estancia bastante acogedora,
+        pero hay algo que te resulta extrañamente perturbador.
+
+        Una anciana en una mecedora con los ojos vendados permanece ahí,
+        frente a una mesa, al Oeste(W), cómo si no se hubiese percatado
+        de que has entrado en la casa.
+
+        Tanto al Norte(N) cómo al Sur(S) ves puertas que te
+        permiten salir de al casa.
+
         ¿Hacia dónde quieres ir? [Norte(N)] [Sur(S)] [Oeste(W)]
         </MSG>
         <N>10</N>
@@ -98,7 +162,9 @@
         <W>9</W>
     </room>
     <room ID = "9">
-        <MSG>La anciana saca un bol de sopa y te obliga a comértela toda, mueres de empacho.
+        <MSG>
+        La anciana saca un bol de sopa y te obliga a comértela toda,
+        mueres de empacho.
         [ESTÁS MUERTO]
         </MSG>
         <N>-1</N>
@@ -107,11 +173,21 @@
         <W>-1</W>
     </room>
     <room ID = "10">
-        <MSG>Estás justo en la parte trasera de una casita de madera cuyas ventanas desprenden una tenue luz.
-        La casa est en linde de un bosque, al norte ves un denso muro de árboles imposible de atravesar.
-        Al oeste ves una subida por dónde te resulta imposible subir, aun así, oyes unos distantes ronquidos en esa dirección.
+        <MSG>
+        Estás justo en la parte trasera de una casita de madera cuyas
+        ventanas desprenden una tenue luz.
+
+        La casa est en linde de un bosque, al norte ves un denso muro de
+        árboles imposible de atravesar.
+
+        Al oeste ves una subida por dónde te resulta imposible subir,
+        aun así, oyes unos distantes ronquidos en esa dirección.
+
         Al Este(E) ves un sendero que parece rodear la casa.
-        Al Sur(S) se encuentra la casa frente a ti, y justo al lado de una ventana iluminada, hay una puerta entreabierta.
+
+        Al Sur(S) se encuentra la casa frente a ti, y justo al lado de una
+        ventana iluminada, hay una puerta entreabierta.
+
         ¿Hacia dónde quieres ir? [Sur(S)] [Este(E)]
         </MSG>
         <N>-1</N>
@@ -120,10 +196,20 @@
         <W>-1</W>
     </room>
     <room ID = "11">
-        <MSG>Oyes unos profundos ronquidos guturales. Ves que al Oeste(W) hay un troll dormido junto a una gran roca en cuyo cuello cuelga una llave.
+        <MSG>
+        Oyes unos profundos ronquidos guturales.
+
+        Ves que al Oeste(W) hay un troll dormido junto a una gran roca
+        en cuyo cuello cuelga una llave.
+
         Al Sur(S) ves la entrada de una cueva tapada por una cortina de plantas.
-        Al Este(E) ves una rampa que baja hacia una zona dónde ves, a lo lejos, un puente cruzando un riachuelo.
-        Al Norte(N) ves cómo el camino se extiende más allá del troll hasta que abruptamente termina en una bajada de unos 3 metros de altura.
+
+        Al Este(E) ves una rampa que baja hacia una zona dónde ves,
+        a lo lejos, un puente cruzando un riachuelo.
+
+        Al Norte(N) ves cómo el camino se extiende más allá del troll
+        hasta que abruptamente termina en una bajada de unos 3 metros de altura.
+
         ¿Hacia dónde quieres ir? [Norte(N)] [Sur(S)] [Este(E)] [Oeste(W)]
         </MSG>
         <N>10</N>
@@ -132,7 +218,9 @@
         <W>12</W>
     </room>
     <room ID = "12">
-        <MSG>Te acercas al troll, pero tras pisar una ramita, éste despierta y te ataca con su enorme garrote.
+        <MSG>
+        Te acercas al troll, pero tras pisar una ramita,
+        éste despierta y te ataca con su enorme garrote.
         [ESTÁS MUERTO]
         </MSG>
         <N>-1</N>

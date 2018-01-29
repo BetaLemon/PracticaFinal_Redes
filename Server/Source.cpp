@@ -25,10 +25,10 @@
 //#define HOST "tcp://127.0.0.1:3306"
 #define HOST "tcp://127.0.0.1:3306"
 #define USER "root"
-#define PASSWORD "eucaliptus"
+#define PASSWORD "over9000"
 #define DATABASE "MUDGAMEDB"
 
-#define MAX_BUFF_SIZE 800
+#define MAX_BUFF_SIZE 1024
 
 #define DEBUG true
 
