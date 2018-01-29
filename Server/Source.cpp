@@ -2,6 +2,8 @@
     #define PUGIXML HEADER ONLY
 #endif  // DEBUG
 
+
+#include <unistd.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -51,12 +53,14 @@ struct SharedData
 {
     std::vector<Room*> rooms;
     std::vector<sf::TcpSocket*> sockets;
+    int serverPID;
 };
 
 pugi::xml_document doc; // Almacena la informacion relacionada al documento XML.
 std::string usuario;    // Almacena el nombre de usuario, una vez se ha logueado.
 bool gameRunning;
 SharedData* shm;
+bool playerExit;
 
 // Estructuras de datos que almacenan información de manera similar a la base de datos respectiva:
 struct Raza { int id; std::string nombre; int vida_base; int fuerza_base; int velocidad_base; };
@@ -70,6 +74,11 @@ std::string Receive(sf::TcpSocket* s){
     if(s->receive(buffer, MAX_BUFF_SIZE, receivedBytes) != sf::Socket::Done){ std::cout << "Error receiving data." << std::endl; }
     buffer[receivedBytes] = '\0';
     std::string tmp = buffer;
+    if(tmp == "EXIT" || tmp == "exit" || tmp == "quit" || tmp == "QUIT")
+    {
+        playerExit = true;
+    }
+
     debug(tmp + " was received.");
     return tmp;
 }
@@ -361,9 +370,10 @@ std::vector<Room*> LoadRoomsMap(){
 }
 
 
+
 void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
 
-    bool playerExit = false;
+    playerExit = false;
 
     SharedData* shd = (struct SharedData*)shmat(shmID, NULL, 0);
     shm = shd;
@@ -412,22 +422,34 @@ void GestionarCliente(int shmID, sql::Statement * stmt, sf::TcpSocket *socket){
 
     }
 
+    //shd->sockets
+
+    kill(shd->serverPID, SIGUSR1);
     shmdt(shd);
     socket->disconnect();
     //socket->close();
     //while(!playerExit && socket->)
 }
 // LISTA DE DUDAS PARA JUEVES: wait(),
+void WaitHandler(int param)
+{
+    wait();
+}
 
 int main(){
     try{
         gameRunning = true;
+        signal(SIGUSR1, WaitHandler);
+
+
         //Shared Memory Reserved
         int shmID = shmget(IPC_PRIVATE, sizeof(SharedData), IPC_CREAT | 0666);
         if(shmID < 0) std::cout << "[FAILED RESERVING SHARED MEMORY]"<< std::endl;
         SharedData* shd = (struct SharedData*)shmat(shmID, NULL, 0);
         if(shd < 0) std::cout << "[ERROR ATTACHING SHARED MEMORY]"<< std::endl;
         shd->rooms = LoadRoomsMap();
+
+        shd->serverPID = getpid();
         // Inicialización para MySQL:
         sql::Driver* driver = get_driver_instance();
         sql::Connection* con = driver->connect(HOST, USER, PASSWORD);
@@ -455,6 +477,11 @@ int main(){
             if(fork() == 0){
                 GestionarCliente(shmID, stmt, &socket);
                 exit(0);
+            }
+
+            if(shd->sockets.size() <= 0)
+            {
+                gameRunning = false;
             }
 
         }
